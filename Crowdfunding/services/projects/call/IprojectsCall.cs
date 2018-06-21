@@ -10,6 +10,6 @@ namespace Crowdfunding.services.projects.call
 {
     public interface IProjectsCall
     {
-        IIncludableQueryable<Project, AspNetUsers> ProjectsIndexCall();
+        IQueryable<Project> ProjectsIndexCall(string searchString, string categorySelection);
     }
 }

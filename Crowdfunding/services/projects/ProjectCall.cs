@@ -4,6 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 
 namespace Crowdfunding.services.projects
 {
@@ -14,10 +19,27 @@ namespace Crowdfunding.services.projects
         {
             _context = context;
         }
-        public IIncludableQueryable<Project, AspNetUsers> ProjectsIndexCall()
+        public IQueryable<Project> ProjectsIndexCall(string searchString, string categorySelection)
         {
             var crowdfundingContext = _context.Project.Include(p => p.Category).Include(p => p.User);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return crowdfundingContext.Where(s => s.ProjectName.ToUpper().Contains(searchString.ToUpper()));
+            }
+            else if (!String.IsNullOrEmpty(categorySelection))
+            {
+                bool isCategoryNameInt = int.TryParse(categorySelection, out int categorySelectionInt);
+                if (isCategoryNameInt && categorySelectionInt!=9)
+                {
+                    return crowdfundingContext.Where(s => s.CategoryId == categorySelectionInt);
+                }
+                else
+                {
+                    return crowdfundingContext;
+                }
+            }
             return crowdfundingContext;
         }
+
     }
 }
