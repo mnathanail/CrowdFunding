@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Crowdfunding.Models
 {
@@ -11,10 +12,14 @@ namespace Crowdfunding.Models
         }
 
         public int ProjectId { get; set; }
+        [Required]
         public string ProjectName { get; set; }
+        [Required]
         public string ProjectDescription { get; set; }
         public decimal AskedFund { get; set; }
         public int Days { get; set; }
+        [Required]
+        [Range(1, 8)]
         public byte NumberOfBenefits { get; set; }
         public string MediaPath { get; set; }
         public string VideoUrl { get; set; }
