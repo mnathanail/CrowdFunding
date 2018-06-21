@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Models;
+using Crowdfunding.services.projects.call;
 
 namespace Crowdfunding.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly CrowdfundingContext _context;
-
-        public ProjectsController(CrowdfundingContext context)
+        private readonly IProjectsCall _projectsCall;
+        public ProjectsController(CrowdfundingContext context, IProjectsCall projectsCall)
         {
             _context = context;
+            _projectsCall = projectsCall;
         }
 
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var crowdfundingContext = _context.Project.Include(p => p.Category).Include(p => p.User);
-            return View(await crowdfundingContext.ToListAsync());
+           
+            return View(await _projectsCall.ProjectsIndexCall().ToListAsync());
         }
 
         // GET: Projects/Details/5
