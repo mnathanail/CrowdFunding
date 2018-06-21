@@ -13,6 +13,8 @@ using Crowdfunding.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Crowdfunding.Models;
+using Crowdfunding.services.projects.call;
+using Crowdfunding.services.projects;
 
 namespace Crowdfunding
 {
@@ -40,10 +42,11 @@ namespace Crowdfunding
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
 
             var connection = @"Server=localhost\sqlexpress;Database=Crowdfunding;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<CrowdfundingContext>(options => options.UseSqlServer(connection));
-
+            services.AddScoped<IProjectsCall, ProjectCall>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -67,12 +70,7 @@ namespace Crowdfunding
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
