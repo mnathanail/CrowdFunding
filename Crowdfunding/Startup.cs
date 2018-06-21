@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Crowdfunding.Models;
 
 namespace Crowdfunding
 {
@@ -39,6 +40,9 @@ namespace Crowdfunding
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            var connection = @"Server=localhost\sqlexpress;Database=Crowdfunding;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<CrowdfundingContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

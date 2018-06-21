@@ -1,11 +1,10 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Crowdfunding.Models
 {
-    public partial class CrowdfundingContext : IdentityDbContext
+    public partial class CrowdfundingContext : DbContext
     {
         public CrowdfundingContext()
         {
@@ -27,14 +26,6 @@ namespace Crowdfunding.Models
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<UsersBenefits> UsersBenefits { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Crowdfunding;Trusted_Connection=True;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
