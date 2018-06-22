@@ -26,7 +26,6 @@ namespace Crowdfunding.Models
         public string VideoUrl { get; set; }
         public string UserId { get; set; }
         [DataType(DataType.Date)]
-        [Range(typeof(DateTime), "1/1/2018", "1/1/2050")]
         public DateTime StartDate { get; set; }
         public int CategoryId { get; set; }
 
