@@ -68,10 +68,7 @@ namespace Crowdfunding.Controllers
             {
                 var ident = User.Identity as ClaimsIdentity;
                 var userID = ident.Claims.FirstOrDefault().Value;
-                project.UserId = userID;
-                project.StartDate = DateTime.Today.Date;
-                _context.Add(project);
-                await _context.SaveChangesAsync();
+                await _projectsCall.ProjectsCreateCall(project, userID);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
