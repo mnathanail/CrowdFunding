@@ -89,6 +89,7 @@ namespace Crowdfunding.Controllers
             {
                 return NotFound();
             }
+            var
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
             return View(project);

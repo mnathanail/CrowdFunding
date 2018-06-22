@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Crowdfunding.Models.Project>
+﻿@model IEnumerable<Crowdfunding.Models.ConcreteModels.ProjectsBenefits>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,7 +27,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectName)
+                @Html.DisplayNameFor(model => model.project.ProjectName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectDescription)
@@ -94,6 +94,7 @@
                     @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
+                    takkis<span>@User.Claims.FirstOrDefault().Value.Equals(@item.User.Id)</span>
                     <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
