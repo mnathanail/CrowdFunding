@@ -7,13 +7,19 @@
 <h2>Index</h2>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "searchByForm" }))
 {
-    <div class="form-group">
-        <label for="">Find by name @Html.TextBox("SearchString", null, new { @class = "form-control" })</label>
-        <input type="submit" class="btn btn-default" value="search" />
-    </div>
-    <div class="form-group">
-        <label for="">Find by Category</label>
-        @await Component.InvokeAsync("CategoriesDropdownListComponent")
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="">Find by name @Html.TextBox("SearchString", null, new { @class = "form-control" })</label>
+                <input type="submit" class="btn btn-default" value="search" />
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="form-group">
+                <label for="">Find by Category</label>
+                @await Component.InvokeAsync("CategoriesDropdownListComponent")
+            </div>
+        </div>
     </div>
 }
 @if (User.Identity.IsAuthenticated)
@@ -91,7 +97,7 @@
                     @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.Id)
+                    @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
