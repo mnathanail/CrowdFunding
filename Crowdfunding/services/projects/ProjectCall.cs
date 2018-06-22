@@ -9,6 +9,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
+using Microsoft.AspNetCore.Http;
+using System.Security.Principal;
 
 namespace Crowdfunding.services.projects
 {
@@ -19,6 +21,7 @@ namespace Crowdfunding.services.projects
         {
             _context = context;
         }
+
         public IQueryable<Project> ProjectsIndexCall(string searchString, string categorySelection)
         {
             var crowdfundingContext = _context.Project.Include(p => p.Category).Include(p => p.User);
@@ -39,6 +42,14 @@ namespace Crowdfunding.services.projects
                 }
             }
             return crowdfundingContext;
+        }
+
+        public async Task ProjectsCreateCall(Project project, string userId)
+        {
+            project.UserId = userId;
+            project.StartDate = DateTime.Today.Date;
+            _context.Add(project);
+            await _context.SaveChangesAsync();
         }
 
     }

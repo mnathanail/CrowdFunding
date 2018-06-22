@@ -32,6 +32,9 @@ $(document).ready(function () {
     });
 
     $("#searchByForm .selectByCategory").on("change", function () {
+        if ($("#SearchString").val() !== "") {
+            $("#SearchString").val("");
+        }
         let selectedCategory = $(".selectByCategory").val();
         addToSessionStorage("selected", selectedCategory);
         $("#searchByForm").submit();
@@ -39,6 +42,9 @@ $(document).ready(function () {
 
     $(".selectByCategory").val(getFromSessionStorage("selected"));
 
-
-
+    $("#button-searchstring").on("click", function () {
+        if ($("#SearchString").val() === "") {
+            return false;
+        };
+    });
 });
