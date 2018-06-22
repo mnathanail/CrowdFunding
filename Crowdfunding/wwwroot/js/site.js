@@ -23,7 +23,7 @@ $(document).ready(function () {
         let inputs = "";
         for (var i = 0; i < amount; i++) {
             inputs += `<div class="form-group Benefit">` +
-                `<label asp-for= "Benefit" class= "control-label" ></label >` +
+                `<label asp-for= "Benefit" class= "control-label" >Benefit package ${i + 1}</label >` +
                 `<input asp-for="Benefit" class="form-control" name="Benefit"/>` +
                 `<span asp-validation-for="Benefit" class="text-danger"></span>` +
                 `</div>`;
