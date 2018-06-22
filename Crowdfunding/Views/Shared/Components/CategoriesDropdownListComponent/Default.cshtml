@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Crowdfunding.Models.Category>;
+<div class="row">
+    <div class="col-xs-4">
+        <select class="form-control selectByCategory" name="categorySelection">
+            @foreach (var item in Model)
+            {
+                <option value="@item.CategoryId">@item.CategoryName</option>
+            }
+        </select>
+    </div>
+</div>

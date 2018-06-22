@@ -5,9 +5,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Models;
 using Crowdfunding.services.projects.call;
+using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Crowdfunding.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly CrowdfundingContext _context;
@@ -19,10 +24,9 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string categorySelection)
         {
-           
-            return View(await _projectsCall.ProjectsIndexCall().ToListAsync());
+            return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection).ToListAsync());
         }
 
         // GET: Projects/Details/5
@@ -58,10 +62,14 @@ namespace Crowdfunding.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, Benefit benefit)
         {
             if (ModelState.IsValid)
             {
+                var ident = User.Identity as ClaimsIdentity;
+                var userID = ident.Claims.FirstOrDefault().Value;
+                project.UserId = userID;
+                project.StartDate = DateTime.Today.Date;
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -5,10 +5,24 @@
 }
 
 <h2>Index</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "searchByForm" }))
+{
+    <div class="form-group">
+        <label for="">Find by name @Html.TextBox("SearchString", null, new { @class = "form-control" })</label>
+        <input type="submit" class="btn btn-default" value="search" />
+    </div>
+    <div class="form-group">
+        <label for="">Find by Category</label>
+        @await Component.InvokeAsync("CategoriesDropdownListComponent")
+    </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -46,44 +60,45 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AskedFund)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Days)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MediaPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VideoUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AskedFund)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Days)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfBenefits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MediaPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VideoUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

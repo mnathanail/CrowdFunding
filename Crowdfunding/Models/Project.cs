@@ -24,6 +24,7 @@ namespace Crowdfunding.Models
         public string MediaPath { get; set; }
         public string VideoUrl { get; set; }
         public string UserId { get; set; }
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         public int CategoryId { get; set; }
 

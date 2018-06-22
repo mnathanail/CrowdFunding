@@ -32,9 +32,9 @@
                 <input asp-for="Days" class="form-control" />
                 <span asp-validation-for="Days" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group NumberOfBenefits">
                 <label asp-for="NumberOfBenefits" class="control-label"></label>
-                <input asp-for="NumberOfBenefits" class="form-control" />
+                <input asp-for="NumberOfBenefits" class="form-control" id="numberOfBenefits-create" />
                 <span asp-validation-for="NumberOfBenefits" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,15 +46,6 @@
                 <label asp-for="VideoUrl" class="control-label"></label>
                 <input asp-for="VideoUrl" class="form-control" />
                 <span asp-validation-for="VideoUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
