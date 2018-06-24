@@ -12,7 +12,6 @@ namespace Crowdfunding.services.projects.call
     public interface IProjectsCall
     {
         IQueryable<Project> ProjectsIndexCall(string searchString, string categorySelection);
-        IEnumerable<Project> Random(Benefit benefit, string BenefitName);
         Task ProjectsCreateCall(Project project, string userId);
     }
 }

@@ -41,11 +41,11 @@ namespace Crowdfunding.Controllers
 
             var model = new ProjectsBenefits();
             model.project = await _context
-                .Project
-                .FirstOrDefaultAsync();
+            .Project
+            .FirstOrDefaultAsync();
             model.benefit = await _context.
-                Benefit
-                .FirstOrDefaultAsync();
+            Benefit
+            .FirstOrDefaultAsync();
 
             //return View(await _context.ProjectsIndexCall()); Θέλουμε να περάσoυμε τις τιμές των benefits μέσω του projects benefits στο Index View
             return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection).ToListAsync());
