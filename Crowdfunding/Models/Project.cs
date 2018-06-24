@@ -8,7 +8,7 @@ namespace Crowdfunding.Models
     {
         public Project()
         {
-            Benefit = new HashSet<Benefit>();
+            Benefit = new List<Benefit>();
         }
 
         public int ProjectId { get; set; }
@@ -26,6 +26,6 @@ namespace Crowdfunding.Models
 
         public Category Category { get; set; }
         public AspNetUsers User { get; set; }
-        public ICollection<Benefit> Benefit { get; set; }
+        public IList<Benefit> Benefit { get; set; }
     }
 }

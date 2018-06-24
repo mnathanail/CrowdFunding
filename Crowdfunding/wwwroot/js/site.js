@@ -24,7 +24,9 @@ $(document).ready(function () {
         for (var i = 0; i < amount; i++) {
             inputs += `<div class="form-group Benefit">` +
                 `<label asp-for= "Benefit" class= "control-label" ></label >` +
-                `<input asp-for="Benefit" class="form-control" name="Benefit"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitName"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitDesciption"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitPrice"/>` +
                 `<span asp-validation-for="Benefit" class="text-danger"></span>` +
                 `</div>`;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Crowdfunding.Models
 {
@@ -11,12 +12,20 @@ namespace Crowdfunding.Models
         }
 
         public int BenefitId { get; set; }
+        [Required]
+        [Display(Name = "Benefit Name")]
         public string BenefitName { get; set; }
+        [Required]
+        [Display(Name = "Benefit Description")]
         public string BenefitDesciption { get; set; }
         public int ProjectId { get; set; }
+        [Required]
+        [Display(Name = "Benefit Price")]
         public decimal BenefitPrice { get; set; }
 
         public Project Project { get; set; }
-        public ICollection<UsersBenefits> UsersBenefits { get; set; }
+        public virtual ICollection<UsersBenefits> UsersBenefits { get; set; }
+
+        
     }
 }
