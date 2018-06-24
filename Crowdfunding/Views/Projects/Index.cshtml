@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Crowdfunding.Models.Project>
+﻿@model Crowdfunding.Utilities.Pagination<Crowdfunding.Models.Project>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,34 +27,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectName)
+                Project Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectDescription)
+                Project Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AskedFund)
+                Asked Fund
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Days)
+                Days
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfBenefits)
+                Number of Benefits
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MediaPath)
+                Media
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
+                Video URL
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                Start Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                User Name
             </th>
             <th></th>
         </tr>
@@ -100,5 +100,19 @@
                 </td>
             </tr>
         }
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
     </tbody>
 </table>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

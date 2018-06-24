@@ -1,4 +1,6 @@
 ﻿using Crowdfunding.Models;
+using Crowdfunding.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
@@ -11,7 +13,7 @@ namespace Crowdfunding.services.projects.call
 {
     public interface IProjectsCall
     {
-        IQueryable<Project> ProjectsIndexCall(string searchString, string categorySelection);
-        Task ProjectsCreateCall(Project project, string userId);
+        Task<Pagination<Project>> ProjectsIndexCall(string searchString, string categorySelection, int? page);
+        Task ProjectsCreateCall(Project project, string userId, IFormFileCollection httpFiles);
     }
 }

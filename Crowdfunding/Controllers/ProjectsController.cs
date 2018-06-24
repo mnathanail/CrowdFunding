@@ -9,6 +9,8 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
+using Crowdfunding.Utilities;
 
 namespace Crowdfunding.Controllers
 {
@@ -24,12 +26,14 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index(string searchString, string categorySelection)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(string searchString, string categorySelection, int? page)
         {
-            return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection).ToListAsync());
+            return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection, page));
         }
 
         // GET: Projects/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -66,9 +70,9 @@ namespace Crowdfunding.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ident = User.Identity as ClaimsIdentity;
-                var userID = ident.Claims.FirstOrDefault().Value;
-                await _projectsCall.ProjectsCreateCall(project, userID);
+                var httpFiles = HttpContext.Request.Form.Files;
+                var userId = _GetPersonId();
+                await _projectsCall.ProjectsCreateCall(project, userId,httpFiles);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
@@ -79,11 +83,14 @@ namespace Crowdfunding.Controllers
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var userid = _GetPersonId();
             if (id == null)
             {
                 return NotFound();
             }
-
+            if (await _ownThisProjectAsync(id, userid) == false) {
+                return RedirectToAction(nameof(Index));
+            }
             var project = await _context.Project.FindAsync(id);
             if (project == null)
             {
@@ -101,9 +108,16 @@ namespace Crowdfunding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project)
         {
+            var userid = _GetPersonId();
+            
             if (id != project.ProjectId)
             {
                 return NotFound();
+            }
+
+            if (await _ownThisProjectAsync(id, userid) == false)
+            {
+                return RedirectToAction(nameof(Index));
             }
 
             if (ModelState.IsValid)
@@ -165,6 +179,16 @@ namespace Crowdfunding.Controllers
         private bool ProjectExists(int id)
         {
             return _context.Project.Any(e => e.ProjectId == id);
+        }
+
+        private string _GetPersonId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        private async Task<bool> _ownThisProjectAsync(int? id, string userId)
+        {
+            return id == null ? false :  await _context.Project.AnyAsync(p => p.UserId == userId && p.ProjectId == id);
         }
     }
 }
