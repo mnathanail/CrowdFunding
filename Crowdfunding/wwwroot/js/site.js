@@ -47,6 +47,6 @@ $(document).ready(function () {
     $("#button-searchstring").on("click", function () {
         if ($("#SearchString").val() === "") {
             return false;
-        };
+        }
     });
 });
