@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Crowdfunding.Models;
 using Crowdfunding.services.projects.call;
 using Crowdfunding.services.projects;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace Crowdfunding
 {
@@ -44,7 +46,7 @@ namespace Crowdfunding
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=Crowdfunding;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=localhost\sqlexpress;Database=Crowdfunding;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<CrowdfundingContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IProjectsCall, ProjectCall>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -63,6 +65,15 @@ namespace Crowdfunding
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            var defaultCulture = new CultureInfo("en-US");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(defaultCulture),
+                SupportedCultures = new List<CultureInfo> { defaultCulture },
+                SupportedUICultures = new List<CultureInfo> { defaultCulture }
+            };
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

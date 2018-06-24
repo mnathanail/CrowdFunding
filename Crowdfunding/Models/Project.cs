@@ -12,10 +12,15 @@ namespace Crowdfunding.Models
         }
 
         public int ProjectId { get; set; }
+        [Required]
         public string ProjectName { get; set; }
+        [Required]
         public string ProjectDescription { get; set; }
         public decimal AskedFund { get; set; }
+        [Range(7, 60, ErrorMessage = "The funding period must be between 7 to 60 days.")]
         public int Days { get; set; }
+        [Required]
+        [Range(1, 8)]
         public byte NumberOfBenefits { get; set; }
         public string MediaPath { get; set; }
         public string VideoUrl { get; set; }

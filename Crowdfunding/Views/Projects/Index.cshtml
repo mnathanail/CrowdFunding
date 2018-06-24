@@ -82,7 +82,9 @@
                     @Html.DisplayFor(modelItem => item.MediaPath)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.VideoUrl)
+                    <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
+                        @Html.DisplayFor(modelItem => item.VideoUrl)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
@@ -106,13 +108,47 @@
         }
     </tbody>
 </table>
-<a asp-action="Index"
-   asp-route-page="@(Model.PageIndex - 1)"
-   class="btn btn-default @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-page="@(Model.PageIndex + 1)"
-   class="btn btn-default @nextDisabled">
-    Next
-</a>
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class=" col-md-3">
+            <div class="card card-inverse card-success bg-info text-center">
+                <img class="card-img-top img-fluid" src="" alt="">
+                <div class="card-block">
+                    <h4 class="card-title">Project: @Html.DisplayFor(modelItem => item.ProjectName)</h4>
+                    <p class="card-text">Description: @Html.DisplayFor(modelItem => item.ProjectDescription)</p>
+                    <a asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-primary">Project Details</a>
+
+                    <p>
+                        Asked Fund: @Html.DisplayFor(modelItem => item.AskedFund)
+                    </p>
+                    <p>
+                        Days: @Html.DisplayFor(modelItem => item.Days)
+                    </p>
+                    <p>
+                        Benefit Packages: @Html.DisplayFor(modelItem => item.NumberOfBenefits)
+                    </p>
+                    <p>
+                        Media: @Html.DisplayFor(modelItem => item.MediaPath)
+                    </p>
+                    <p>
+                        <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
+                            @Html.DisplayFor(modelItem => item.VideoUrl)
+                        </a>
+                    </p>
+                    <p>
+                        Start at : @Html.DisplayFor(modelItem => item.StartDate)
+                    </p>
+                    <p>
+                        Category: @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </p>
+                    <p>
+                        By user: @Html.DisplayFor(modelItem => item.User.UserName)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
