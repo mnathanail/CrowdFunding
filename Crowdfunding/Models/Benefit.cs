@@ -26,6 +26,6 @@ namespace Crowdfunding.Models
         public Project Project { get; set; }
         public virtual ICollection<UsersBenefits> UsersBenefits { get; set; }
 
-        
+
     }
 }

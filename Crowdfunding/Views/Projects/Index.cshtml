@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Crowdfunding.Models.ConcreteModels.ProjectsBenefits>
+﻿@model Crowdfunding.Models.Project
 
 @{
     ViewData["Title"] = "Index";
@@ -27,83 +27,83 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.project.ProjectName)
+                @Html.DisplayNameFor(model => model.ProjectName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.ProjectDescription)
+                @Html.DisplayNameFor(model => model.ProjectDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.AskedFund)
+                @Html.DisplayNameFor(model => model.AskedFund)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.Days)
+                @Html.DisplayNameFor(model => model.Days)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.NumberOfBenefits)
+                @Html.DisplayNameFor(model => model.NumberOfBenefits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.Benefit)
+                @Html.DisplayNameFor(model => model.Benefit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.MediaPath)
+                @Html.DisplayNameFor(model => model.MediaPath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.VideoUrl)
+                @Html.DisplayNameFor(model => model.VideoUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.StartDate)
+                @Html.DisplayNameFor(model => model.StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.Category)
+                @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.project.User)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.)
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.project.ProjectName)
+                @Html.DisplayFor(modelItem => item.ProjectName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.ProjectDescription)
+                @Html.DisplayFor(modelItem => item.ProjectDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.AskedFund)
+                @Html.DisplayFor(modelItem => item.AskedFund)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.Days)
+                @Html.DisplayFor(modelItem => item.Days)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.Benefit)
+                @Html.DisplayFor(modelItem => item.Benefit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.NumberOfBenefits)
+                @Html.DisplayFor(modelItem => item.NumberOfBenefits)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.MediaPath)
+                @Html.DisplayFor(modelItem => item.MediaPath)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.VideoUrl)
+                @Html.DisplayFor(modelItem => item.VideoUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.StartDate)
+                @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.Category.CategoryName)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.project.User.UserName)
+                @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
             <td>
                 <ul>
-                    <a asp-action="Edit" asp-route-id="@item.project.ProjectId">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.project.ProjectId">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.project.ProjectId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
                 </ul>
             </td>
         </tr>
