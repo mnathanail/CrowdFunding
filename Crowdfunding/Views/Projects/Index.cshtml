@@ -82,7 +82,9 @@
                     @Html.DisplayFor(modelItem => item.MediaPath)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.VideoUrl)
+                    <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
+                        @Html.DisplayFor(modelItem => item.VideoUrl)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
@@ -128,7 +130,9 @@
                         Media: @Html.DisplayFor(modelItem => item.MediaPath)
                     </p>
                     <p>
-                        Video: @Html.DisplayFor(modelItem => item.VideoUrl)
+                        <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
+                            @Html.DisplayFor(modelItem => item.VideoUrl)
+                        </a>
                     </p>
                     <p>
                         Start at : @Html.DisplayFor(modelItem => item.StartDate)
