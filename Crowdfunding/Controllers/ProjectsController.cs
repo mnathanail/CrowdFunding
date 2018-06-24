@@ -20,6 +20,7 @@ namespace Crowdfunding.Controllers
         private readonly CrowdfundingContext _context;
 
         private readonly IProjectsCall _projectsCall;
+
         public ProjectsController(CrowdfundingContext context, IProjectsCall projectsCall)
         {
             _context = context;
@@ -45,7 +46,8 @@ namespace Crowdfunding.Controllers
             model.benefit = await _context.
                 Benefit
                 .FirstOrDefaultAsync();
-            
+
+            //return View(await _context.ProjectsIndexCall()); Θέλουμε να περάσoυμε τις τιμές των benefits μέσω του projects benefits στο Index View
             return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection).ToListAsync());
         }
 
@@ -87,7 +89,6 @@ namespace Crowdfunding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, List<Benefit> benefit)
         {
-            
             if (ModelState.IsValid)
             {
                 var ident = User.Identity as ClaimsIdentity;

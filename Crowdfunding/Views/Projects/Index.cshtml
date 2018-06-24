@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Crowdfunding.Models.Project>
+﻿@model IEnumerable<Crowdfunding.Models.ConcreteModels.ProjectsBenefits>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,34 +27,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectName)
+                @Html.DisplayNameFor(model => model.project.ProjectName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProjectDescription)
+                @Html.DisplayNameFor(model => model.project.ProjectDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AskedFund)
+                @Html.DisplayNameFor(model => model.project.AskedFund)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Days)
+                @Html.DisplayNameFor(model => model.project.Days)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfBenefits)
+                @Html.DisplayNameFor(model => model.project.NumberOfBenefits)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MediaPath)
+                @Html.DisplayNameFor(model => model.project.Benefit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
+                @Html.DisplayNameFor(model => model.project.MediaPath)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.project.VideoUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.project.StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.project.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.project.User)
             </th>
             <th></th>
         </tr>
@@ -62,45 +65,48 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AskedFund)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Days)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MediaPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VideoUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.UserName)
-                </td>
-                <td>
-                    <ul>
-                        <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
-                    </ul>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.ProjectDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.AskedFund)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.Days)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.Benefit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.NumberOfBenefits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.MediaPath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.VideoUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.project.User.UserName)
+            </td>
+            <td>
+                <ul>
+                    <a asp-action="Edit" asp-route-id="@item.project.ProjectId">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.project.ProjectId">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.project.ProjectId">Delete</a>
+                </ul>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
