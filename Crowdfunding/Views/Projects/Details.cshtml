@@ -68,10 +68,27 @@
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.Id)
+            @Html.DisplayFor(model => model.User.UserName)
         </dd>
     </dl>
 </div>
+
+
+@foreach (var item in Model.Benefit)
+{
+    <div>@item.BenefitName</div>
+    <div>@item.BenefitDesciption</div>
+    <div>@item.BenefitPrice</div>
+    <form asp-controller="UsersBenefits" asp-action="Create">
+        <div class="form-group">
+            <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
+            <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+            <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+        </div>
+        <input type="submit" value="buy dat shit" />
+    </form>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
     <a asp-action="Index">Back to List</a>

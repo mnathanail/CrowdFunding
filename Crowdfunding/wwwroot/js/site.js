@@ -23,8 +23,10 @@ $(document).ready(function () {
         let inputs = "";
         for (var i = 0; i < amount; i++) {
             inputs += `<div class="form-group Benefit">` +
-                `<label asp-for= "Benefit" class= "control-label" >Benefit package ${i + 1}</label >` +
-                `<input asp-for="Benefit" class="form-control" name="Benefit"/>` +
+                `<label asp-for="Benefit" class= "control-label" ></label >` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitName" placeholder="Benefit Name"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitDesciption" placeholder="Benefit Description"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitPrice" placeholder="Benefit Price"/>` +
                 `<span asp-validation-for="Benefit" class="text-danger"></span>` +
                 `</div>`;
         }
@@ -45,6 +47,6 @@ $(document).ready(function () {
     $("#button-searchstring").on("click", function () {
         if ($("#SearchString").val() === "") {
             return false;
-        };
+        }
     });
 });

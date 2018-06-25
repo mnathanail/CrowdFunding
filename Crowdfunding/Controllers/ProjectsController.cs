@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
 using Crowdfunding.Utilities;
+using System.Collections.Generic;
 
 namespace Crowdfunding.Controllers
 {
@@ -44,7 +45,11 @@ namespace Crowdfunding.Controllers
             var project = await _context.Project
                 .Include(p => p.Category)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectId == id);
+                .Include(b => b.Benefit).Where(p=>p.ProjectId==id)
+                //.Join(_context.Benefit, p => p.ProjectId, b => b.BenefitId,
+                //(p, b) => new { Project = p, Benefit = b }).Where(ben => ben.Benefit.ProjectId. == id)
+                //.Select(a => a.Project)
+                .FirstOrDefaultAsync();
             if (project == null)
             {
                 return NotFound();
@@ -66,13 +71,19 @@ namespace Crowdfunding.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, Benefit benefit)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, List<Benefit> benefits)
         {
             if (ModelState.IsValid)
             {
                 var httpFiles = HttpContext.Request.Form.Files;
                 var userId = _GetPersonId();
                 await _projectsCall.ProjectsCreateCall(project, userId,httpFiles);
+                foreach (var benefit in benefits)
+                {
+                    benefit.ProjectId = project.ProjectId;
+                }
+                _context.Benefit.AddRange(benefits);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
