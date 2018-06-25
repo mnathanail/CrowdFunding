@@ -32,5 +32,6 @@ namespace Crowdfunding.Models
         public Category Category { get; set; }
         public AspNetUsers User { get; set; }
         public ICollection<Benefit> Benefit { get; set; }
+        public ICollection<UsersBenefits> UsersBenefits { get; set; }
     }
 }

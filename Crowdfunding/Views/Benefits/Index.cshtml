@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Crowdfunding.Models.Benefit>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BenefitName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BenefitDesciption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BenefitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BenefitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BenefitDesciption)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BenefitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.ProjectDescription)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BenefitId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BenefitId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BenefitId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

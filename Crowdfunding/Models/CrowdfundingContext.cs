@@ -198,7 +198,7 @@ namespace Crowdfunding.Models
 
             modelBuilder.Entity<UsersBenefits>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.BenefitId });
+                entity.HasKey(e => new { e.UserId, e.BenefitId, e.ProjectId });
 
                 entity.HasOne(d => d.Benefit)
                     .WithMany(p => p.UsersBenefits)
@@ -211,6 +211,12 @@ namespace Crowdfunding.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_261");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.UsersBenefits)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_281");
             });
         }
     }

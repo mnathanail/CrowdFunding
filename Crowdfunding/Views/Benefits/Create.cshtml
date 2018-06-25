@@ -1,0 +1,48 @@
+﻿@model Crowdfunding.Models.Benefit
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Benefit</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BenefitName" class="control-label"></label>
+                <input asp-for="BenefitName" class="form-control" />
+                <span asp-validation-for="BenefitName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenefitDesciption" class="control-label"></label>
+                <input asp-for="BenefitDesciption" class="form-control" />
+                <span asp-validation-for="BenefitDesciption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectId" class="control-label"></label>
+                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenefitPrice" class="control-label"></label>
+                <input asp-for="BenefitPrice" class="form-control" />
+                <span asp-validation-for="BenefitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
