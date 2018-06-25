@@ -12,6 +12,9 @@ using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
 using Crowdfunding.Utilities;
 using System.Collections.Generic;
+using System.Web;
+using System.Security.Policy;
+using System.IO;
 
 namespace Crowdfunding.Controllers
 {
@@ -46,15 +49,12 @@ namespace Crowdfunding.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.User)
                 .Include(b => b.Benefit).Where(p=>p.ProjectId==id)
-                //.Join(_context.Benefit, p => p.ProjectId, b => b.BenefitId,
-                //(p, b) => new { Project = p, Benefit = b }).Where(ben => ben.Benefit.ProjectId. == id)
-                //.Select(a => a.Project)
                 .FirstOrDefaultAsync();
+
             if (project == null)
             {
                 return NotFound();
             }
-
             return View(project);
         }
 
@@ -201,5 +201,6 @@ namespace Crowdfunding.Controllers
         {
             return id == null ? false :  await _context.Project.AnyAsync(p => p.UserId == userId && p.ProjectId == id);
         }
+
     }
 }

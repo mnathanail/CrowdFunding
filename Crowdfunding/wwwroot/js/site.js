@@ -11,7 +11,7 @@ $(document).ready(function () {
             return sessionStorage.getItem(name);
         }
         else {
-            sessionStorage.setItem(name, "9");
+            sessionStorage.setItem(name, "0");
             return sessionStorage.getItem(name);
         }
     };

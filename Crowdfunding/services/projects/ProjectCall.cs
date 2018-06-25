@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Hosting.Server;
+using System.Web;
 
 namespace Crowdfunding.services.projects
 {
@@ -29,17 +30,17 @@ namespace Crowdfunding.services.projects
 
         public async Task<Pagination<Project>> ProjectsIndexCall(string searchString, string categorySelection, int? page)
         {
-           
             var crowdfundingContext = _context.Project.Include(p => p.Category).Include(p => p.User);
             var pageSize = 2;
             if (!String.IsNullOrEmpty(searchString))
             {
-                return await Pagination<Project>.CreateAsync(crowdfundingContext.Where(s => s.ProjectName.ToUpper().Contains(searchString.ToUpper())).AsNoTracking(), page ?? 1 , pageSize);
+                page = 1;
+                return await Pagination<Project>.CreateAsync(crowdfundingContext.Where(s => s.ProjectName.ToUpper().Contains(searchString.ToUpper())).AsNoTracking(), page??1 , pageSize);
             }
             else if (!String.IsNullOrEmpty(categorySelection))
             {
                 bool isCategoryNameInt = int.TryParse(categorySelection, out int categorySelectionInt);
-                if (isCategoryNameInt && categorySelectionInt!=9)
+                if (isCategoryNameInt && categorySelectionInt!= 0)
                 {
                     return await Pagination<Project>.CreateAsync(crowdfundingContext.Where(s => s.CategoryId == categorySelectionInt).AsNoTracking(), page ?? 1, pageSize);
                 }
@@ -62,7 +63,7 @@ namespace Crowdfunding.services.projects
                                     MediaChecking.checkPhotosExtension(mediaFile)) ||
                                     (MediaChecking.checkVideoContenType(mediaFile) &&
                                     MediaChecking.checkVideoExtension(mediaFile));
-                var folder = Path.Combine(_environment.ContentRootPath, "media");
+                var folder = Path.Combine(_environment.WebRootPath, "media");
                 var createdDirectory = Directory.CreateDirectory(folder + "\\"+ userId+"\\" + $"{project.ProjectName.ToLower()}");
                 project.MediaPath = createdDirectory.ToString();
                 foreach (var photo in mediaFile)

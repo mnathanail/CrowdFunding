@@ -1,5 +1,5 @@
 ﻿@model Crowdfunding.Models.Project
-
+@using System.IO;
 @{
     ViewData["Title"] = "Details";
 }
@@ -73,6 +73,11 @@
     </dl>
 </div>
 
+@foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
+{
+    var img = new FileInfo(imgPath);
+    <img src="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)" />
+}
 
 @foreach (var item in Model.Benefit)
 {
