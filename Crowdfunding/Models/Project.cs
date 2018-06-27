@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Crowdfunding.Models
@@ -16,6 +17,7 @@ namespace Crowdfunding.Models
         public string ProjectName { get; set; }
         [Required]
         public string ProjectDescription { get; set; }
+        [DisplayName("Goal")]
         public decimal AskedFund { get; set; }
         [Range(7, 60, ErrorMessage = "The funding period must be between 7 to 60 days.")]
         public int Days { get; set; }

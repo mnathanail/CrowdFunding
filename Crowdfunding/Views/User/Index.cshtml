@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Crowdfunding.Models.Project>
+﻿@model IEnumerable<Crowdfunding.Models.GiveItATry>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,6 +13,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProjectName)
             </th>
+            <th>@Html.DisplayNameFor(model => model.Backer)</th>
+            <th>
+                Raised so far
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AskedFund)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +29,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProjectName)
             </td>
+            <td>@Html.DisplayFor(modelItem => item.Backer)</td>
+            <td>@Html.DisplayFor(modelItem => item.Sum)</td>
+            <td>$@Html.DisplayFor(modelItem => item.AskedFund)</td>
         </tr>
         }
     </tbody>

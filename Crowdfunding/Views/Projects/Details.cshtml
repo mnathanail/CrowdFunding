@@ -74,11 +74,11 @@
 </div>
 
 
-@*@foreach (var item in Model.Benefit)
+@foreach (var item in Model.Benefit)
 {
-    <div>@item.BenefitName</div>
-    <div>@item.BenefitDesciption</div>
-    <div>@item.BenefitPrice</div>
+    <div>Package Name: @item.BenefitName</div>
+    <div>Description: @item.BenefitDesciption</div>
+    <div>Price: $@item.BenefitPrice</div>
     <form asp-controller="UsersBenefits" asp-action="Create">
         <div class="form-group">
             <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
@@ -87,7 +87,7 @@
         </div>
         <input type="submit" value="buy dat shit" />
     </form>
-}*@
+}
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
