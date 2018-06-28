@@ -72,20 +72,24 @@
     <img src="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)" />
 }
 
-@foreach (var item in Model.Benefit)
-{
-    <div>@item.BenefitName</div>
-    <div>@item.BenefitDesciption</div>
-    <div>@item.BenefitPrice</div>
-    <form asp-controller="UsersBenefits" asp-action="Create">
-        <div class="form-group">
-            <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
-            <span asp-validation-for=@item.BenefitId class="text-danger"></span>
-            <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+<div class="container">
+    @foreach (var item in Model.Benefit)
+    {
+        <div align="center">
+            <div>Package Name: @item.BenefitName</div>
+            <div>Description: @item.BenefitDesciption</div>
+            <div>Price: $@item.BenefitPrice</div>
+            <form asp-controller="UsersBenefits" asp-action="Create">
+                <div class="form-group">
+                    <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
+                    <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                    <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+                </div>
+                <input class="btn btn-primary" type="submit" value="Buy this Package" />
+            </form>
         </div>
-        <input type="submit" value="buy dat shit" />
-    </form>
-}
+    }
+</div>
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
