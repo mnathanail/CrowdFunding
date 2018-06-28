@@ -38,7 +38,7 @@ namespace Crowdfunding.Controllers
             //   .Include(p => p.Project)
             //   .Where(a => a.ProjectId == a.Project.ProjectId)
             //   .GroupBy(n => n.ProjectId)
-            //   .Select(p => new GiveItATry
+            //   .Select(p => new Dashboard
             //   {
             //       //AskedFund = p.ToDictionary(a => a, a => Project.Askedfund.Value),
             //       ProjectId = p.Key,
@@ -49,14 +49,14 @@ namespace Crowdfunding.Controllers
 
             var usercontext = await _context.Benefit
                .Include(p => p.Project)
-               .Where(a => a.ProjectId == a.Project.ProjectId)
-               .GroupBy(n => n.ProjectId)
-               .Select(p => new GiveItATry
+               .Include(p => p.UsersBenefits)
+               .Where(a => a.ProjectId == a.Project.ProjectId && a.Project.UserId == userId)
+               .Select(p => new Dashboard
                {
-                   ProjectId = p.Key,
-                   Benefit = p.ToList(),
-                   Backer = p.Count(),
-                   Sum = p.Sum(oi => oi.BenefitPrice),
+                   ProjectName = p.Project.ProjectName,
+                   Backers = p.UsersBenefits.Count(),
+                   Amount = p.Project.AskedFund,
+                   Sum = p.BenefitPrice
                }).ToListAsync();
 
             //var usercontext = await _context.UsersBenefits
@@ -66,7 +66,7 @@ namespace Crowdfunding.Controllers
             //    .Include(p => p.Project)
             //    .Where(a => a.ProjectId == a.Project.ProjectId)
             //    .GroupBy(n => n.ProjectId)
-            //    .Select(p => new GiveItATry
+            //    .Select(p => new Dashboard
             //    {
 
             //        ProjectId = p.Key,

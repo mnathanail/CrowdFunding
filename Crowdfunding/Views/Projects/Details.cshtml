@@ -4,90 +4,89 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Project Details</h2>
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AskedFund)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AskedFund)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Days)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Days)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfBenefits)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfBenefits)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaPath)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MediaPath)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.VideoUrl)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
-    </dl>
+<h4>Project</h4>
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectDescription)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectDescription)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.AskedFund)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.AskedFund)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Days)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Days)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.NumberOfBenefits)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.NumberOfBenefits)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.VideoUrl)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.VideoUrl)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.StartDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.StartDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Category)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Category.CategoryName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.UserName)
+    </dd>
+</dl>
+
+<div class="container">
+    @foreach (var item in Model.Benefit)
+    {
+        <div align="center">
+            <div>Package Name: @item.BenefitName</div>
+            <div>Description: @item.BenefitDesciption</div>
+            <div>Price: $@item.BenefitPrice</div>
+            <form asp-controller="UsersBenefits" asp-action="Create">
+                <div class="form-group">
+                    <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
+                    <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                    <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+                </div>
+                <input class="btn btn-primary" type="submit" value="Buy this Package" />
+            </form>
+        </div>
+    }
 </div>
 
 
-@foreach (var item in Model.Benefit)
-{
-    <div>Package Name: @item.BenefitName</div>
-    <div>Description: @item.BenefitDesciption</div>
-    <div>Price: $@item.BenefitPrice</div>
-    <form asp-controller="UsersBenefits" asp-action="Create">
-        <div class="form-group">
-            <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
-            <span asp-validation-for=@item.BenefitId class="text-danger"></span>
-            <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
-        </div>
-        <input type="submit" value="buy dat shit" />
-    </form>
-}
+
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |

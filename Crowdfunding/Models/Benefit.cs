@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Crowdfunding.Models
 {
@@ -14,6 +15,7 @@ namespace Crowdfunding.Models
         public string BenefitName { get; set; }
         public string BenefitDesciption { get; set; }
         public int ProjectId { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public decimal BenefitPrice { get; set; }
 
         public Project Project { get; set; }

@@ -14,8 +14,10 @@ namespace Crowdfunding.Models
 
         public int ProjectId { get; set; }
         [Required]
+        [DisplayName("Project Name")]
         public string ProjectName { get; set; }
         [Required]
+        [DisplayName("Description")]
         public string ProjectDescription { get; set; }
         [DisplayName("Goal")]
         public decimal AskedFund { get; set; }
@@ -23,6 +25,7 @@ namespace Crowdfunding.Models
         public int Days { get; set; }
         [Required]
         [Range(1, 8)]
+        [DisplayName("Number of Packages")]
         public byte NumberOfBenefits { get; set; }
         public string MediaPath { get; set; }
         public string VideoUrl { get; set; }

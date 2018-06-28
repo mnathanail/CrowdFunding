@@ -1,38 +1,41 @@
-﻿@model IEnumerable<Crowdfunding.Models.GiveItATry>
+﻿@model IEnumerable<Crowdfunding.Models.Dashboard>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    <h2>My Projects</h2>
 
-<h2>My Projects</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectName)
-            </th>
-            <th>@Html.DisplayNameFor(model => model.Backer)</th>
-            <th>
-                Raised so far
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AskedFund)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectName)
-            </td>
-            <td>@Html.DisplayFor(modelItem => item.Backer)</td>
-            <td>@Html.DisplayFor(modelItem => item.Sum)</td>
-            <td>$@Html.DisplayFor(modelItem => item.AskedFund)</td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <table class="table table-striped table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProjectName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Backers)
+                </th>
+                <th>
+                    Raised so far
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Backers)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Sum)</td>
+                    <td>$@Html.DisplayFor(modelItem => item.Amount)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
