@@ -17,11 +17,12 @@
                     @Html.DisplayNameFor(model => model.Backers)
                 </th>
                 <th>
-                    Raised so far
+                    @Html.DisplayNameFor(model => model.Sum)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Amount)
                 </th>
+                <th>Progress</th>
             </tr>
         </thead>
         <tbody>
@@ -31,9 +32,24 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ProjectName)
                     </td>
-                    <td>@Html.DisplayFor(modelItem => item.Backers)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Sum)</td>
-                    <td>$@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Backers)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sum)
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        <div class="progress-bar" id="theprogressbar">
+                            @{var progr = item.Sum * 100 / item.Amount;}
+                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                 aria-valuenow=@progr aria-valuemin="0" aria-valuemax="100" style="width:@progr">
+                                @progr
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>

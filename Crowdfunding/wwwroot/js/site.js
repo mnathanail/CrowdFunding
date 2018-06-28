@@ -49,4 +49,7 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    //var newprogress = item.Sum *100 / item.Amount;
+    //$('#theprogressbar').attr('aria-valuenow', newprogress).css('width', newprogress);
 });

@@ -42,9 +42,6 @@
                 Number of Benefits
             </th>
             <th>
-                Media
-            </th>
-            <th>
                 Video URL
             </th>
             <th>
@@ -77,9 +74,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MediaPath)
                 </td>
                 <td>
                     <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
@@ -124,7 +118,7 @@
     {
         <div class="col-md-3">
             <div class="card card-inverse card-success bg-info text-center">
-                <img class="card-img-top img-fluid" src="" alt="">
+                <img class="card-img-top img-fluid" src="https://picsum.photos/200/?random" alt="">
                 <div class="card-block">
                     <h4 class="card-title">Project: @Html.DisplayFor(modelItem => item.ProjectName)</h4>
                     <p class="card-text">Description: @Html.DisplayFor(modelItem => item.ProjectDescription)</p>
@@ -138,9 +132,6 @@
                     </p>
                     <p>
                         Benefit Packages: @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-                    </p>
-                    <p>
-                        Media: @Html.DisplayFor(modelItem => item.MediaPath)
                     </p>
                     <p>
                         <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">

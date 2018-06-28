@@ -16,6 +16,7 @@ namespace Crowdfunding.Models
         public List<Benefit> Benefit = new List<Benefit>();
         [DisplayName("Total Backers")]
         public int Backers { get; set; }
+        [DisplayName("Raised so far")]
         public decimal Sum { get; set; }
     }
 }
