@@ -25,6 +25,7 @@ $(document).ready(function () {
             inputs += `<div class="form-group Benefit">` +
                 `<label asp-for="Benefit" class= "control-label" ></label >` +
                 `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitName" placeholder="Benefit Name"/>` +
+                `<span asp-validation-for="BenefitName" class="text-danger"></span>` +
                 `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitDesciption" placeholder="Benefit Description"/>` +
                 `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitPrice" placeholder="Benefit Price"/>` +
                 `<span asp-validation-for="Benefit" class="text-danger"></span>` +
@@ -49,4 +50,40 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    //$("#create-new-project").on("click", function (event) {
+    //    event.preventDefault();
+    //    var action = $("#form-create-project").attr("action");
+    //    console.log(action);
+    //    var data = $("#form-create-project").serialize();
+    //    $(this).attr("disabled", "disabled");
+        
+        //$.ajax({
+        //    data: data,
+        //    url: action,
+        //    type: "POST",
+        //})
+        //.done(function (data, statusText) {
+        //    console.log(data.projectName.name);
+        //    console.log(statusText);
+        //   // window.location.href = data.redirectUrl;
+        //}).fail(function () {
+        //    console.log("error");
+        //})
+    //});
+    $("#takis").on("click", function () {
+        $.ajax({
+
+            url: "/apiprojects/index",
+            type: "GET"
+        })
+            .done(function (data, statusText) {
+                console.log(data.name);
+                console.log(statusText);
+                // window.location.href = data.redirectUrl;
+            }).fail(function () {
+                console.log("error");
+            });
+    });
+
 });

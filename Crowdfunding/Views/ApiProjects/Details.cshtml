@@ -1,0 +1,79 @@
+﻿@model Crowdfunding.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AskedFund)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AskedFund)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Days)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Days)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfBenefits)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfBenefits)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MediaPath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MediaPath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VideoUrl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VideoUrl)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
