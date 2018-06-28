@@ -49,4 +49,28 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    $("#cr_button").on("click", function () {
+        event.preventDefault();
+        let formData = $('#create-movie-form').serialize();
+        $(this).attr("disable", "disable");
+
+        var action = $('#create-movie-form').att('action');
+        
+
+        $.ajax({
+            url: action,
+            type: 'POST',
+            data: formData
+        }).done(function (data, title) {
+            console.log(data.projectName.title);
+            //window.location.href = data.redirectUrl();
+            //window.location.href = title.redirectUrl();
+        }),
+          fail(function () {
+
+            });
+        );
+
+    })
 });
