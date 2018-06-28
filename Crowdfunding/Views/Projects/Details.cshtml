@@ -4,74 +4,67 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Project Details</h2>
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AskedFund)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AskedFund)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Days)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Days)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfBenefits)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfBenefits)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaPath)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MediaPath)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.VideoUrl)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.UserName)
-        </dd>
-    </dl>
-</div>
+<h4>Project</h4>
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectDescription)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectDescription)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.AskedFund)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.AskedFund)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Days)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Days)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.NumberOfBenefits)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.NumberOfBenefits)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.VideoUrl)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.VideoUrl)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.StartDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.StartDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Category)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Category.CategoryName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.UserName)
+    </dd>
+</dl>
 
 @foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
 {

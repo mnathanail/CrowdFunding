@@ -22,7 +22,10 @@ namespace Crowdfunding.Controllers
         // GET: UsersBenefits
         public async Task<IActionResult> Index()
         {
-            var crowdfundingContext = _context.UsersBenefits.Include(u => u.Benefit).Include(u => u.User).Include(u=>u.Project);
+            var crowdfundingContext = _context.UsersBenefits
+                .Include(u => u.Benefit)
+                .Include(u => u.User)
+                .Include(u => u.Project);
             return View(await crowdfundingContext.ToListAsync());
         }
 
@@ -63,7 +66,7 @@ namespace Crowdfunding.Controllers
         {
             if (ModelState.IsValid)
             {
-                var hasBenefit = await _context.UsersBenefits.AnyAsync(u=>u.UserId == _GetPersonId() && u.BenefitId == usersBenefits.BenefitId);
+                var hasBenefit = await _context.UsersBenefits.AnyAsync(u => u.UserId == _GetPersonId() && u.BenefitId == usersBenefits.BenefitId);
                 if (hasBenefit)
                 {
                     //return false;
