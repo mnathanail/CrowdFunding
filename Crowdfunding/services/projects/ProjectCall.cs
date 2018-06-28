@@ -54,7 +54,16 @@ namespace Crowdfunding.services.projects
 
         public async Task ProjectsCreateCall(Project project, string userId, IFormFileCollection httpFiles)
         {
-            if (httpFiles != null)
+            AddMediaFiles(project, userId, httpFiles);
+            project.UserId = userId;
+            project.StartDate = DateTime.Today.Date;
+            _context.Add(project);
+            await _context.SaveChangesAsync();
+        }
+
+        private void AddMediaFiles(Project project, string userId, IFormFileCollection httpFiles)
+        {
+            if (httpFiles.Count()>0)
             {
                 string pathToDir = string.Empty;
                 var photoName = "";
@@ -79,12 +88,8 @@ namespace Crowdfunding.services.projects
                         fs.Flush();
                     }
                 }
-                
+
             }
-            project.UserId = userId;
-            project.StartDate = DateTime.Today.Date;
-            _context.Add(project);
-            await _context.SaveChangesAsync();
         }
     }
 }
