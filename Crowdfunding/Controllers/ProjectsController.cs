@@ -83,7 +83,10 @@ namespace Crowdfunding.Controllers
                     benefit.ProjectId = project.ProjectId;
                 }
                 _context.Benefit.AddRange(benefits);
-                project.VideoUrl = _EmbeddedVideo(project.VideoUrl);
+                if (project.VideoUrl != null)
+                {
+                    project.VideoUrl = _EmbeddedVideo(project.VideoUrl);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

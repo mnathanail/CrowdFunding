@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Crowdfunding/wwwroot/media/5a80fe3f-6817-470c-a6ed-aa6becf33539/funny a album
+/Crowdfunding/wwwroot/media/5a80fe3f-6817-470c-a6ed-aa6becf33539/amazing me
+/Crowdfunding/wwwroot/media/5a80fe3f-6817-470c-a6ed-aa6becf33539/random photos
