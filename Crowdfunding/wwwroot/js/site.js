@@ -51,39 +51,36 @@ $(document).ready(function () {
         }
     });
 
-    //$("#create-new-project").on("click", function (event) {
-    //    event.preventDefault();
-    //    var action = $("#form-create-project").attr("action");
-    //    console.log(action);
-    //    var data = $("#form-create-project").serialize();
-    //    $(this).attr("disabled", "disabled");
-        
-        //$.ajax({
-        //    data: data,
-        //    url: action,
-        //    type: "POST",
-        //})
-        //.done(function (data, statusText) {
-        //    console.log(data.projectName.name);
-        //    console.log(statusText);
-        //   // window.location.href = data.redirectUrl;
-        //}).fail(function () {
-        //    console.log("error");
-        //})
-    //});
-    $("#takis").on("click", function () {
+    $(".buy-benefit").on("click", function (event) {
+        event.preventDefault();
+        var action = $(this).parents('form:first').attr("action");
+        var data = $(this).parents('form:first').serialize();
+        $(this).attr("disabled", "disabled");
         $.ajax({
-
-            url: "/apiprojects/index",
-            type: "GET"
+            data: data,
+            url: action,
+            type: "POST"
         })
-            .done(function (data, statusText) {
-                console.log(data.name);
-                console.log(statusText);
-                // window.location.href = data.redirectUrl;
-            }).fail(function () {
-                console.log("error");
-            });
+        .done(function (data, statusText) {
+            data.status === false ? toastr.success(data.message) : toastr.warning(data.message);
+        }).fail(function () {
+            console.log("error");
+        });
     });
+
+    //$("#takis").on("click", function () {
+    //    $.ajax({
+
+    //        url: "/apiprojects/index",
+    //        type: "GET"
+    //    })
+    //        .done(function (data, statusText) {
+    //            console.log(data.name);
+    //            console.log(statusText);
+    //            // window.location.href = data.redirectUrl;
+    //        }).fail(function () {
+    //            console.log("error");
+    //        });
+    //});
 
 });

@@ -69,12 +69,25 @@ namespace Crowdfunding.Controllers
                 var hasBenefit = await _context.UsersBenefits.AnyAsync(u => u.UserId == _GetPersonId() && u.BenefitId == usersBenefits.BenefitId);
                 if (hasBenefit)
                 {
-                    //return false;
+                    return Json(new
+                    {
+                        status = hasBenefit,
+                        message = "You have already bought this pacage, please select another one!"
+                    });
                 }
-                usersBenefits.UserId = _GetPersonId();
-                _context.Add(usersBenefits);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    usersBenefits.UserId = _GetPersonId();
+                    _context.Add(usersBenefits);
+                    await _context.SaveChangesAsync();
+                    //return RedirectToAction(nameof(Index));
+                    return Json(new
+                    {
+                        status = hasBenefit,
+                        message = "Congratulations! Smart choice to give us your money!"
+                    });
+                }
+                
             }
             ViewData["BenefitId"] = new SelectList(_context.Benefit, "BenefitId", "BenefitDesciption", usersBenefits.BenefitId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", usersBenefits.UserId);

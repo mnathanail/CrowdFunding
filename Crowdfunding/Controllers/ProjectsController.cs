@@ -84,12 +84,7 @@ namespace Crowdfunding.Controllers
                 }
                 _context.Benefit.AddRange(benefits);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return Json(new
-                {
-                    RedirectUrl = Url.Action("details", "projects", new { id = project.ProjectId }),
-                    ProjectName = new { name = project.ProjectName}
-                });
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
