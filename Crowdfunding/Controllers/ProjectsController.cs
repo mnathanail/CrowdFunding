@@ -83,6 +83,7 @@ namespace Crowdfunding.Controllers
                     benefit.ProjectId = project.ProjectId;
                 }
                 _context.Benefit.AddRange(benefits);
+                project.VideoUrl = _EmbeddedVideo(project.VideoUrl);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -195,6 +196,11 @@ namespace Crowdfunding.Controllers
         private string _GetPersonId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        private string _EmbeddedVideo(string videoUrl)
+        {
+            return videoUrl.Replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
         }
 
         private async Task<bool> _ownThisProjectAsync(int? id, string userId)
