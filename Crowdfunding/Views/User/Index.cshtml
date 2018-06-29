@@ -43,11 +43,11 @@
                     </td>
                     <td>
                         <div class="progress" id="theprogressbar">
-                            @{var progr = item.Sum * 100 / item.Amount;
+                            @{var progr = (item.Sum * 100 / item.Amount).ToString("0.##");
                                 var pres = progr + "%";}
                             <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                 aria-valuenow=@progr aria-valuemin="0" aria-valuemax="100" style="width:@pres">
-                                @progr
+                                 aria-valuenow=@progr aria-valuemin="0" aria-valuemax="100" style="width:@pres;color:black">
+                                @progr%
                             </div>
                         </div>
                     </td>
