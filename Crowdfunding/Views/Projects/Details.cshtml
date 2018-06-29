@@ -88,7 +88,15 @@
                     <span asp-validation-for=@item.BenefitId class="text-danger"></span>
                     <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
                 </div>
-                <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
+                }
+
             </form>
         </div>
     }
