@@ -42,10 +42,11 @@
                         $@Html.DisplayFor(modelItem => item.Amount)
                     </td>
                     <td>
-                        <div class="progress-bar" id="theprogressbar">
-                            @{var progr = item.Sum * 100 / item.Amount;}
+                        <div class="progress" id="theprogressbar">
+                            @{var progr = item.Sum * 100 / item.Amount;
+                                var pres = progr + "%";}
                             <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                 aria-valuenow="@progr" aria-valuemin="0" aria-valuemax="100" style="width:@progr%">
+                                 aria-valuenow=@progr aria-valuemin="0" aria-valuemax="100" style="width:@pres">
                                 @progr
                             </div>
                         </div>
