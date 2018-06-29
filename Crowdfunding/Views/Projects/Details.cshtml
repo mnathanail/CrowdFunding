@@ -71,27 +71,31 @@
     var img = new FileInfo(imgPath);
     <img src="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)" />
 }
+    <p align="center">
+        <iframe width="420" height="315"
+                src="@Html.DisplayFor(model => model.VideoUrl)"></iframe>
+    </p>
 
-<div class="container">
-    @foreach (var item in Model.Benefit)
-    {
-        <div align="center">
-            <div>Package Name: @item.BenefitName</div>
-            <div>Description: @item.BenefitDesciption</div>
-            <div>Price: $@item.BenefitPrice</div>
-            <form asp-controller="UsersBenefits" asp-action="Create">
-                <div class="form-group">
-                    <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
-                    <span asp-validation-for=@item.BenefitId class="text-danger"></span>
-                    <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+        <div class="container">
+            @foreach (var item in Model.Benefit)
+            {
+                <div align="center">
+                    <div>Package Name: @item.BenefitName</div>
+                    <div>Description: @item.BenefitDesciption</div>
+                    <div>Price: $@item.BenefitPrice</div>
+                    <form asp-controller="UsersBenefits" asp-action="Create">
+                        <div class="form-group">
+                            <input asp-for=@item.BenefitId type="hidden" name="BenefitId" class="form-control" />
+                            <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                            <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" class="form-control" />
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Buy this Package" />
+                    </form>
                 </div>
-                <input class="btn btn-primary" type="submit" value="Buy this Package" />
-            </form>
+            }
         </div>
-    }
-</div>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
