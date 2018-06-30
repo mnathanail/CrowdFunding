@@ -1,18 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Diagnostics;
 
 namespace Crowdfunding.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly CrowdfundingContext _context;
+        public HomeController(CrowdfundingContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var userId = _GetPersonId();
+
+            var usercontext = await _context.Project
+                .Include(u => u.User)
+                //.Include(b => b.UsersBenefits)
+                //.Where(p => p.UserId == userId)
+                .Select(p => new Dashboard
+                {
+                    ProjectId = p.ProjectId,
+                    ProjectName = p.ProjectName,
+                    Amount = p.AskedFund
+                })
+                .ToListAsync();
+
+            foreach (var item in usercontext)
+            {
+                item.Backers = await _context.UsersBenefits
+                .Where(p => p.ProjectId == item.ProjectId)
+                .Select(i => i.Benefit).CountAsync();
+            }
+            var sortedList = usercontext.OrderByDescending(l => l.Backers).Take(10)
+                             .ToList();
+
+
+            return View(sortedList);
         }
 
         public IActionResult About()
@@ -38,6 +72,11 @@ namespace Crowdfunding.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private string _GetPersonId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }
