@@ -78,27 +78,34 @@
 <div class="container">
     @foreach (var item in Model.Benefit)
     {
-        <div align="center">
-            <div>Package Name: @item.BenefitName</div>
-            <div>Description: @item.BenefitDesciption</div>
-            <div>Price: $@item.BenefitPrice</div>
-            <form asp-controller="UsersBenefits" id="benefits-form-@item.BenefitId" asp-action="Create">
-                <div class="form-group">
-                    <input asp-for=@item.BenefitId type="hidden" name="BenefitId" value=@item.BenefitId class="form-control" />
-                    <span asp-validation-for=@item.BenefitId class="text-danger"></span>
-                    <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
-                </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
-                }
-                else
-                {
-                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
-                }
-
-            </form>
-        </div>
+    <div align="center">
+        <div>Package Name: @item.BenefitName</div>
+        <div>Description: @item.BenefitDesciption</div>
+        <div>Price: $@item.BenefitPrice</div>
+        <form asp-controller="UsersBenefits" id="benefits-form-@item.BenefitId" asp-action="Create">
+            <div class="form-group">
+                <input asp-for=@item.BenefitId type="hidden" name="BenefitId" value=@item.BenefitId class="form-control" />
+                <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
+            }
+            else
+            {
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
+            }
+        </form>
+        <form id="myform" action="/checkout" method="post">
+            <button type="button"
+                    data-vp-publickey="LZmm8E8FLUJmRMPQFAssIV3mkzsrgQ3wbDIp7XcsZno="
+                    data-vp-baseurl="https://demo.vivapayments.com"
+                    data-vp-lang="en"
+                    data-vp-amount="@item.BenefitPrice"
+                    data-vp-description="@item.BenefitDesciption"></button>
+        </form>
+    </div>
     }
 </div>
 

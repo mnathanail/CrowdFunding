@@ -15,5 +15,6 @@ namespace Crowdfunding.services.projects.call
     {
         Task<Pagination<Project>> ProjectsIndexCall(string searchString, string categorySelection, int? page);
         Task ProjectsCreateCall(Project project, string userId, IFormFileCollection httpFiles);
+        Task<Pagination<Project>> ProjectsIndexCallJson(int? page);
     }
 }
