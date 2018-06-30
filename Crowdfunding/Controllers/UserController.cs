@@ -30,55 +30,32 @@ namespace Crowdfunding.Controllers
                 return NotFound();
             }
 
-            //var usercontext = await _context.Project
-            //    .Include(u => u.User)
-            //    .Where(p => p.UserId == userId).ToListAsync();
+            var usercontext = await _context.Project
+                .Include(u => u.User)
+                //.Include(b => b.UsersBenefits)
+                .Where(p => p.UserId == userId)
+                .Select(p => new Dashboard
+                {
+                    ProjectId = p.ProjectId,
+                    ProjectName = p.ProjectName,
+                    Amount = p.AskedFund
+                })
+                .ToListAsync();
 
-            //var usercontext = await _context.Benefit
-            //   .Include(p => p.Project)
-            //   .Where(a => a.ProjectId == a.Project.ProjectId)
-            //   .GroupBy(n => n.ProjectId)
-            //   .Select(p => new Dashboard
-            //   {
-            //       //AskedFund = p.ToDictionary(a => a, a => Project.Askedfund.Value),
-            //       ProjectId = p.Key,
-            //       Benefit = p.ToList(),
-            //       Backer = p.Count(),
-            //       Sum = p.Sum(oi => oi.BenefitPrice),
-            //   }).ToListAsync();
+            foreach (var item in usercontext)
+            {
+                item.Backers = await _context.UsersBenefits
+                .Where(p => p.ProjectId == item.ProjectId)
+                .Select(i => i.Benefit).CountAsync();
 
-            var usercontext = await _context.Benefit
-               .Include(p => p.Project)
-               .Include(p => p.UsersBenefits)
-               .Where(a => a.ProjectId == a.Project.ProjectId && a.Project.UserId == userId)
-               .Select(p => new Dashboard
-               {
-                   ProjectName = p.Project.ProjectName,
-                   Backers = p.UsersBenefits.Count(),
-                   Amount = p.Project.AskedFund,
-                   Sum = p.BenefitPrice
-               }).ToListAsync();
-
-            //var usercontext = await _context.UsersBenefits
-            //    .Include(b => b.Benefit)
-            //    .Include(p => p.User)
-            //    .Where(p => p.UserId == userId)
-            //    .Include(p => p.Project)
-            //    .Where(a => a.ProjectId == a.Project.ProjectId)
-            //    .GroupBy(n => n.ProjectId)
-            //    .Select(p => new Dashboard
-            //    {
-
-            //        ProjectId = p.Key,
-            //        Backer = p.Count(),
-            //        Sum = p.Sum(oi => oi.Benefit.BenefitPrice),
-            //        AskedFund = p.ToDictionary(a => a, a => Project.Askedfund.Value)
-            //    })
-            //    .ToListAsync();
-
+                item.Sum = await _context.UsersBenefits
+                .Where(p => p.ProjectId == item.ProjectId)
+                .Select(i => i.Benefit.BenefitPrice).SumAsync();
+            }
+            
             return View(usercontext);
         }
-        
+
         private string _GetPersonId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
