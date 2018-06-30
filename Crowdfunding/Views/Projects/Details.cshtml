@@ -1,77 +1,127 @@
 ﻿@model Crowdfunding.Models.Project
-
+@using System.IO;
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Project Details</h2>
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AskedFund)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AskedFund)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Days)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Days)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NumberOfBenefits)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NumberOfBenefits)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaPath)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MediaPath)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.VideoUrl)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-    </dl>
+<h3>Project</h3>
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.ProjectDescription)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ProjectDescription)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.AskedFund)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.AskedFund)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Days)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Days)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.NumberOfBenefits)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.NumberOfBenefits)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.VideoUrl)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.VideoUrl)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.StartDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.StartDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Category)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Category.CategoryName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.UserName)
+    </dd>
+</dl>
+
+
+<div align="center" class="gallery">
+    <h4>Photo Ambum</h4>
+    @if (Model.MediaPath != null)
+    {
+        foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
+        {
+            var img = new FileInfo(imgPath);
+            <a target="_blank" href="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)">
+                <img height="200" src="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)" />
+            </a>
+        }
+    }
 </div>
+<br />
+
+<div align="center">
+    <h4>Video</h4>
+    <iframe width="420" height="315" src="@Html.DisplayFor(model => model.VideoUrl)"></iframe>
+</div>
+<br />
+
+<div class="row" align="center">
+    <div class="container">
+        <h4>Packages</h4>
+        @foreach (var item in Model.Benefit)
+        {
+            <div class="col-md-3">
+                <div class="card card-inverse card-success text-center">
+                    <div align="center">
+                        <div>Package Name: @item.BenefitName</div>
+                        <div>Description: @item.BenefitDesciption</div>
+                        <div>Price: $@item.BenefitPrice</div>
+                        <form asp-controller="UsersBenefits" id="benefits-form-@item.BenefitId" asp-action="Create">
+                            <div class="form-group">
+                                <input asp-for=@item.BenefitId type="hidden" name="BenefitId" value=@item.BenefitId class="form-control" />
+                                <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                                <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
+                            </div>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<br />
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
     <a asp-action="Index">Back to List</a>

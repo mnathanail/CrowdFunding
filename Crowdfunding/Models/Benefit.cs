@@ -19,8 +19,7 @@ namespace Crowdfunding.Models
         [Display(Name = "Benefit Description")]
         public string BenefitDesciption { get; set; }
         public int ProjectId { get; set; }
-        [Required]
-        [Display(Name = "Benefit Price")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public decimal BenefitPrice { get; set; }
 
         public Project Project { get; set; }

@@ -11,7 +11,7 @@ $(document).ready(function () {
             return sessionStorage.getItem(name);
         }
         else {
-            sessionStorage.setItem(name, "9");
+            sessionStorage.setItem(name, "0");
             return sessionStorage.getItem(name);
         }
     };
@@ -23,10 +23,11 @@ $(document).ready(function () {
         let inputs = "";
         for (var i = 0; i < amount; i++) {
             inputs += `<div class="form-group Benefit">` +
-                `<label asp-for= "Benefit" class= "control-label" ></label >` +
-                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitName"/>` +
-                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitDesciption"/>` +
-                `<input asp-for="Benefit" class="form-control" name="Benefit[${i}].BenefitPrice"/>` +
+                `<label asp-for="Benefit" class= "control-label" ></label >` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitName" placeholder="Benefit Name"/>` +
+                `<span asp-validation-for="BenefitName" class="text-danger"></span>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitDesciption" placeholder="Benefit Description"/>` +
+                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitPrice" placeholder="Benefit Price"/>` +
                 `<span asp-validation-for="Benefit" class="text-danger"></span>` +
                 `</div>`;
         }
@@ -49,4 +50,37 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    $(".buy-benefit").on("click", function (event) {
+        event.preventDefault();
+        var action = $(this).parents('form:first').attr("action");
+        var data = $(this).parents('form:first').serialize();
+        $(this).attr("disabled", "disabled");
+        $.ajax({
+            data: data,
+            url: action,
+            type: "POST"
+        })
+        .done(function (data, statusText) {
+            data.status === false ? toastr.success(data.message) : toastr.warning(data.message);
+        }).fail(function () {
+            console.log("error");
+        });
+    });
+
+    //$("#takis").on("click", function () {
+    //    $.ajax({
+
+    //        url: "/apiprojects/index",
+    //        type: "GET"
+    //    })
+    //        .done(function (data, statusText) {
+    //            console.log(data.name);
+    //            console.log(statusText);
+    //            // window.location.href = data.redirectUrl;
+    //        }).fail(function () {
+    //            console.log("error");
+    //        });
+    //});
+
 });

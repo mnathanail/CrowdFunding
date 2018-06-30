@@ -9,8 +9,12 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-using Crowdfunding.Models.ConcreteModels;
+using System.ComponentModel.DataAnnotations;
+using Crowdfunding.Utilities;
 using System.Collections.Generic;
+using System.Web;
+using System.Security.Policy;
+using System.IO;
 
 namespace Crowdfunding.Controllers
 {
@@ -28,31 +32,14 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects
-        [HttpGet]
-        public async Task<IActionResult> Index(string searchString, string categorySelection)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index(string searchString, string categorySelection, int? page)
         {
-            var projects = await _context
-                .Project
-                .ToListAsync();
-            var benefits = await _context
-                .Benefit
-                .ToListAsync();
-
-
-            var model = new ProjectsBenefits();
-            model.project = await _context
-            .Project
-            .FirstOrDefaultAsync();
-            model.benefit = await _context.
-            Benefit
-            .FirstOrDefaultAsync();
-
-            //return View(await _context.ProjectsIndexCall()); Θέλουμε να περάσoυμε τις τιμές των benefits μέσω του projects benefits στο Index View
-            return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection).ToListAsync());
+            return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection, page));
         }
 
         // GET: Projects/Details/5
-        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,13 +50,13 @@ namespace Crowdfunding.Controllers
             var project = await _context.Project
                 .Include(p => p.Category)
                 .Include(p => p.User)
-                .Include(p => p.Benefit)
-                .FirstOrDefaultAsync(m => m.ProjectId == id);
+                .Include(b => b.Benefit).Where(p=>p.ProjectId==id)
+                .FirstOrDefaultAsync();
+
             if (project == null)
             {
                 return NotFound();
             }
-
             return View(project);
         }
 
@@ -87,18 +74,22 @@ namespace Crowdfunding.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, List<Benefit> benefit)
+        public async Task<IActionResult> Create([Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project, List<Benefit> benefits)
         {
             if (ModelState.IsValid)
             {
-                var ident = User.Identity as ClaimsIdentity;
-                var userID = ident.Claims.FirstOrDefault().Value;
-                await _projectsCall.ProjectsCreateCall(project, userID);
-                foreach(var ben in benefit)
+                var httpFiles = HttpContext.Request.Form.Files;
+                var userId = _GetPersonId();
+                await _projectsCall.ProjectsCreateCall(project, userId,httpFiles);
+                foreach (var benefit in benefits)
                 {
-                    ben.ProjectId = project.ProjectId;
+                    benefit.ProjectId = project.ProjectId;
                 }
-                _context.Benefit.AddRange(benefit);
+                _context.Benefit.AddRange(benefits);
+                if (project.VideoUrl != null)
+                {
+                    project.VideoUrl = _EmbeddedVideo(project.VideoUrl);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -112,11 +103,14 @@ namespace Crowdfunding.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            var userid = _GetPersonId();
             if (id == null)
             {
                 return NotFound();
             }
-
+            if (await _ownThisProjectAsync(id, userid) == false) {
+                return RedirectToAction(nameof(Index));
+            }
             var project = await _context.Project.FindAsync(id);
             if (project == null)
             {
@@ -134,9 +128,16 @@ namespace Crowdfunding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project)
         {
+            var userid = _GetPersonId();
+            
             if (id != project.ProjectId)
             {
                 return NotFound();
+            }
+
+            if (await _ownThisProjectAsync(id, userid) == false)
+            {
+                return RedirectToAction(nameof(Index));
             }
 
             if (ModelState.IsValid)
@@ -200,5 +201,21 @@ namespace Crowdfunding.Controllers
         {
             return _context.Project.Any(e => e.ProjectId == id);
         }
+
+        private string _GetPersonId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        private string _EmbeddedVideo(string videoUrl)
+        {
+            return videoUrl.Replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
+        }
+
+        private async Task<bool> _ownThisProjectAsync(int? id, string userId)
+        {
+            return id == null ? false :  await _context.Project.AnyAsync(p => p.UserId == userId && p.ProjectId == id);
+        }
+
     }
 }
