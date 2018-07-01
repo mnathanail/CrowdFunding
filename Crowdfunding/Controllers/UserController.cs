@@ -32,7 +32,6 @@ namespace Crowdfunding.Controllers
 
             var usercontext = await _context.Project
                 .Include(u => u.User)
-                //.Include(b => b.UsersBenefits)
                 .Where(p => p.UserId == userId)
                 .Select(p => new Dashboard
                 {

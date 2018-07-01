@@ -72,7 +72,7 @@ namespace Crowdfunding.Controllers
                     return Json(new
                     {
                         status = hasBenefit,
-                        message = "You have already bought this pacage, please select another one!"
+                        message = "You have already bought this package, please select another one!"
                     });
                 }
                 else
@@ -80,14 +80,12 @@ namespace Crowdfunding.Controllers
                     usersBenefits.UserId = _GetPersonId();
                     _context.Add(usersBenefits);
                     await _context.SaveChangesAsync();
-                    //return RedirectToAction(nameof(Index));
                     return Json(new
                     {
                         status = hasBenefit,
                         message = "Congratulations! Smart choice to give us your money!"
                     });
                 }
-                
             }
             ViewData["BenefitId"] = new SelectList(_context.Benefit, "BenefitId", "BenefitDesciption", usersBenefits.BenefitId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", usersBenefits.UserId);

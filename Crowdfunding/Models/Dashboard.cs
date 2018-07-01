@@ -9,6 +9,7 @@ namespace Crowdfunding.Models
     public class Dashboard
     {
         public int ProjectId { get; set; }
+        [DisplayName("Project Title")]
         public string ProjectName { get; set; }
         [DisplayName("Goal")]
         public decimal Amount { get; set; }
