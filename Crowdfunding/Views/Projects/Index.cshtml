@@ -26,88 +26,88 @@
         </p>
     }
 
-<table class="table table-striped table-hover table-responsive">
-    <thead>
-        <tr>
-            <th>
-                Project Name
-            </th>
-            <th>
-                Project Description
-            </th>
-            <th>
-                Asked Fund
-            </th>
-            <th>
-                Days
-            </th>
-            <th>
-                Number of Benefits
-            </th>
-            <th>
-                Video URL
-            </th>
-            <th>
-                Start Date
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                User Name
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table table-striped table-hover table-responsive">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProjectDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AskedFund)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Days)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-                </td>
-                <td>
-                    <a id="videoUrl" target="_blank" href="@item.VideoUrl">
-                        @Html.DisplayFor(modelItem => item.VideoUrl)
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.UserName)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
-                    @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(item.UserId))
-                    {
-                        <p>
-                            |
-                            <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ProjectId"> Delete </a>
-                        </p>
-                    }
-                </td>
+                <th>
+                    Project Name
+                </th>
+                <th>
+                    Project Description
+                </th>
+                <th>
+                    Asked Fund
+                </th>
+                <th>
+                    Days
+                </th>
+                <th>
+                    Number of Benefits
+                </th>
+                <th>
+                    Video URL
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    User Name
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-@{
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AskedFund)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Days)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfBenefits)
+                    </td>
+                    <td>
+                        <a id="videoUrl" target="_blank" href="@item.VideoUrl">
+                            @Html.DisplayFor(modelItem => item.VideoUrl)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
+                        @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(item.UserId))
+                        {
+                            <p>
+                                |
+                                <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@item.ProjectId"> Delete </a>
+                            </p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
@@ -129,13 +129,13 @@
         {
             <div class="col-md-3">
                 <div class="card card-inverse card-success bg-info text-center">
-                    @if (Model.FirstOrDefault().MediaPath != null)
+                    @if (item.MediaPath != null)
                     {
-                        @foreach (var imgPath in Directory.GetFiles(Url.Content(Model.FirstOrDefault().MediaPath)))
+                        @foreach (var imgPath in Directory.GetFiles(Url.Content(item.MediaPath)))
                         {
                             var img = new FileInfo(imgPath);
-                            <a target="_blank" href="@Url.Content("~/media/" + Model.FirstOrDefault().UserId + "/" + Model.FirstOrDefault().ProjectName + "/" + img.Name)">
-                                <img class="card-img-top img-fluid" height="200" src="@Url.Content("~/media/" + Model.FirstOrDefault().UserId + "/" + Model.FirstOrDefault().ProjectName + "/" + img.Name)" />
+                            <a target="_blank" href="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)">
+                                <img class="card-img-top img-fluid" height="200" src="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)" />
                             </a>
                             break;
                         }
