@@ -3,10 +3,26 @@
 @{
     ViewData["Title"] = "Details";
 }
+
 @section metatags {
     <meta name='og:title' content='@Model.ProjectName' />
     <meta name='og:description' content='@Model.ProjectDescription' />
+    <meta name='og:url' content='http://01141cd4.ngrok.io/Projects/Details/1' />
+    <meta name='fb:app_id' content='537177923344662' />
+    <meta name='og:type' content='article' />
+    @if (Model.MediaPath != null)
+    {
+        @foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
+        {
+            var img = new FileInfo(imgPath);
+            var imagePath = Url.Content("~/media/" + Model.UserId + "/" + Model.ProjectName + "/" + img.Name);
+            <meta name='og:image' content='@imagePath' />
+            break;
+        }
+    }
 }
+
+
 <h2>Project Details</h2>
 
 <h3>Project</h3>
@@ -98,47 +114,51 @@
 <div class="row" align="center">
     <div class="container">
         <h4>Packages</h4>
-        @foreach (var item in Model.Benefit)
-        {
-            <div class="col-md-3">
-                <div class="card card-inverse card-success text-center">
-                    <div align="center">
-                        <div>Package Name: @item.BenefitName</div>
-                        <div>Description: @item.BenefitDesciption</div>
-                        <div>Price: $@item.BenefitPrice</div>
-                        <form asp-controller="UsersBenefits" id="benefits-form-@item.BenefitId" asp-action="Create">
-                            <div class="form-group">
-                                <input asp-for=@item.BenefitId type="hidden" name="BenefitId" value=@item.BenefitId class="form-control" />
-                                <span asp-validation-for=@item.BenefitId class="text-danger"></span>
-                                <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
-                            </div>
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
-                            }
-                            else
-                            {
-                                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
-                            }
-                        </form>
+        @{
+            var sum = 0;
+            @foreach (var item in Model.Benefit)
+            {
+                <div class="col-md-3">
+                    <div class="card card-inverse card-success text-center">
+                        <div align="center">
+                            <div>Package Name: @item.BenefitName</div>
+                            <div>Description: @item.BenefitDesciption</div>
+                            <div>Price: $@item.BenefitPrice</div>
+                            <form asp-controller="UsersBenefits" id="benefits-form-@item.BenefitId" asp-action="Create">
+                                <div class="form-group">
+                                    <input asp-for=@item.BenefitId type="hidden" name="BenefitId" value=@item.BenefitId class="form-control" />
+                                    <span asp-validation-for=@item.BenefitId class="text-danger"></span>
+                                    <input asp-for=@Model.ProjectId type="hidden" name="ProjectId" value=@item.ProjectId class="form-control" />
+                                </div>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <input class="btn btn-primary buy-benefit" type="submit" value="Buy this Package" />
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
+                                }
+                            </form>
 
+                        </div>
                     </div>
                 </div>
-            </div>
+                sum += Convert.ToInt32(item.BenefitPrice)*100;
+            }
         }
-
         <form id="myform" action="/Projects/Details/@Model.ProjectId" method="post">
             <button type="button"
                     data-vp-publickey="CI+tnPBEUkhvr8Wr8j/rREtxx2TmNQIdZV8aT7RjArE="
                     data-vp-baseurl="https://demo.vivapayments.com"
                     data-vp-lang="en"
-                    data-vp-amount="1000"
+                    data-vp-amount="@sum"
+                    data-vp-merchantref="@sum"
                     data-vp-description="My product"></button>
         </form>
     </div>
 </div>
 <br />
-<div class="fb-share-button" data-href="https://www.localhost:44327/Projects/Details/1" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div><div>
+<div class="fb-share-button" data-href="http://8720d32c.eu.ngrok.io/Projects/Details/1" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div><div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

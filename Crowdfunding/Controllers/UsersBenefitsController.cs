@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Models;
 using System.Security.Claims;
+using MimeKit;
 
 namespace Crowdfunding.Controllers
 {
@@ -64,6 +65,7 @@ namespace Crowdfunding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BenefitId,UserId,ProjectId")] UsersBenefits usersBenefits)
         {
+            var userId = _GetPersonId();
             if (ModelState.IsValid)
             {
                 var hasBenefit = await _context.UsersBenefits.AnyAsync(u => u.UserId == _GetPersonId() && u.BenefitId == usersBenefits.BenefitId);
@@ -80,7 +82,56 @@ namespace Crowdfunding.Controllers
                     usersBenefits.UserId = _GetPersonId();
                     _context.Add(usersBenefits);
                     await _context.SaveChangesAsync();
-                    //return RedirectToAction(nameof(Index));
+
+                    var usercontext = await _context.Project
+                       .Include(u => u.User)
+                       .Where(p => p.UserId == userId)
+                       .Select(p => new 
+                       {
+                           p.ProjectId,
+                           p.ProjectName,
+                           p.AskedFund,
+                           p.User.Email
+                       }).ToListAsync();
+                       
+                    decimal sum = 0;
+                    var askedFund = 0M;
+                    var proId = 0;
+                    var pname = "";
+                    var backers = new List<string>();
+                    foreach (var item in usercontext)
+                    {
+                         sum= await _context.UsersBenefits
+                        .Where(p => p.ProjectId == item.ProjectId)
+                        .Select(i => i.Benefit.BenefitPrice).SumAsync();
+                        askedFund = item.AskedFund;
+                        proId = item.ProjectId;
+                        backers.Add(item.Email);
+                        pname = item.ProjectName;
+                    }
+                    if (sum >= askedFund)
+                    {
+                        var message = new MimeMessage();
+                        message.From.Add(new MailboxAddress(pname, "ccrowdfunding@gmail.com"));
+                        foreach(var backer in backers)
+                        {
+                            message.To.Add(new MailboxAddress("Hello!", backer));
+                        }
+
+                        message.Subject = "Information mail";
+                        message.Body = new TextPart("plain")
+                        {
+                            Text = "Your project has been funded"
+                        };
+                        using (var client = new MailKit.Net.Smtp.SmtpClient())
+                        {
+                            client.Connect("smtp.gmail.com", 587, false);
+                            client.Authenticate("ccrowdfunders.info@gmail.com", "Crowdfunders.");
+                            client.Send(message);
+                            client.Disconnect(true);
+                        }
+                    }
+
                     return Json(new
                     {
                         status = hasBenefit,
