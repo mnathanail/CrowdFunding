@@ -52,6 +52,13 @@ namespace Crowdfunding.services.projects
             return await Pagination<Project>.CreateAsync(crowdfundingContext.AsNoTracking(), page ?? 1, pageSize);
         }
 
+        public async Task<Pagination<Project>> ProjectsIndexCallJson(int? page)
+        {
+            var crowdfundingContext = _context.Project;
+            var pageSize = 2;
+            return await Pagination<Project>.CreateAsync(crowdfundingContext.AsNoTracking(), page ?? 1, pageSize);
+        }
+
         public async Task ProjectsCreateCall(Project project, string userId, IFormFileCollection httpFiles)
         {
             AddMediaFiles(project, userId, httpFiles);
