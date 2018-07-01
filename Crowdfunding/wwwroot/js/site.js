@@ -142,7 +142,19 @@ $(document).ready(function () {
             //page: id
         }
     }).done(function (data) {
-            $("#getAllProjects").append(JSON.stringify(data.getAllProjects, null, '\t'));
+        $("#getAllProjects").append(JSON.stringify(data.getAllProjects, null, '\t'));
+        }).fail(function () {
+            console.log("fail");
+        });
+
+    $.ajax({
+        url: "/apiprojects/getprojectdetails/1",
+        type: "GET",
+        data: {
+            //page: id
+        }
+    }).done(function (data) {
+        $("#getProjectDetails").append(JSON.stringify(data.getProjectsDetails, null, '\t'));
         }).fail(function () {
             console.log("fail");
         });

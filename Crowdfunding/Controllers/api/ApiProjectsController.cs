@@ -42,7 +42,12 @@ namespace Crowdfunding.Controllers.api
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> GetProjectDetails(int? id)
         {
             if (id == null)
             {
@@ -55,8 +60,10 @@ namespace Crowdfunding.Controllers.api
             {
                 return NotFound();
             }
-
-            return Json(project);
+            return Json(new
+            {
+                getProjectsDetails = project
+            });
         }
 
         private bool ProjectExists(int id)
