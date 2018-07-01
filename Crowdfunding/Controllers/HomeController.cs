@@ -9,6 +9,7 @@ using Crowdfunding.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Diagnostics;
+using MimeKit;
 
 namespace Crowdfunding.Controllers
 {
@@ -22,6 +23,24 @@ namespace Crowdfunding.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("TestProject", "testproject@gmail.com"));
+            message.To.Add(new MailboxAddress("Hello", "ccrowdfunders.info@gmail.com"));
+            message.Subject = "test mail";
+            message.Body = new TextPart("plain")
+            {
+                Text = "Hi! hello world"
+            };
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("ccrowdfunders.info@gmail.com", "Crowdfunders.");
+                client.Disconnect(true);
+            }
+
+
+
+
             var userId = _GetPersonId();
 
             var usercontext = await _context.Project
@@ -41,10 +60,14 @@ namespace Crowdfunding.Controllers
                 item.Backers = await _context.UsersBenefits
                 .Where(p => p.ProjectId == item.ProjectId)
                 .Select(i => i.Benefit).CountAsync();
+
+                item.Sum = await _context.UsersBenefits
+                .Where(p => p.ProjectId == item.ProjectId)
+                .Select(i => i.Benefit.BenefitPrice).SumAsync();
             }
             var sortedList = usercontext.OrderByDescending(l => l.Backers).Take(10)
                              .ToList();
-
+            var sortedListFunds = usercontext.OrderByDescending(f => f.Sum).Take(10).ToList();
 
             return View(sortedList);
         }
