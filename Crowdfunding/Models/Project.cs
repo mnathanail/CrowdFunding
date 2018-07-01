@@ -9,7 +9,7 @@ namespace Crowdfunding.Models
     {
         public Project()
         {
-            Benefit = new HashSet<Benefit>();
+            Benefit = new List<Benefit>();
         }
 
         public int ProjectId { get; set; }

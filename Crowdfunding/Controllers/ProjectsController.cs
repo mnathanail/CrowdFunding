@@ -23,7 +23,9 @@ namespace Crowdfunding.Controllers
     public class ProjectsController : Controller
     {
         private readonly CrowdfundingContext _context;
+
         private readonly IProjectsCall _projectsCall;
+
         public ProjectsController(CrowdfundingContext context, IProjectsCall projectsCall)
         {
             _context = context;
@@ -60,6 +62,7 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects/Create
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
@@ -91,12 +94,14 @@ namespace Crowdfunding.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
             return View(project);
         }
 
         // GET: Projects/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             var userid = _GetPersonId();
@@ -171,6 +176,7 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

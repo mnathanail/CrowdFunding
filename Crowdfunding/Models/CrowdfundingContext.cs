@@ -145,7 +145,9 @@ namespace Crowdfunding.Models
                     .IsRequired()
                     .HasMaxLength(30);
 
-                entity.Property(e => e.BenefitPrice).HasColumnType("money");
+                entity.Property(e => e.BenefitPrice)
+                    .IsRequired()
+                    .HasColumnType("money");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.Benefit)

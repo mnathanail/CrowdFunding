@@ -12,13 +12,19 @@ namespace Crowdfunding.Models
         }
 
         public int BenefitId { get; set; }
+        [Required]
+        [Display(Name = "Benefit Name")]
         public string BenefitName { get; set; }
+        [Required]
+        [Display(Name = "Benefit Description")]
         public string BenefitDesciption { get; set; }
         public int ProjectId { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
         public decimal BenefitPrice { get; set; }
 
         public Project Project { get; set; }
-        public ICollection<UsersBenefits> UsersBenefits { get; set; }
+        public virtual ICollection<UsersBenefits> UsersBenefits { get; set; }
+
+
     }
 }
