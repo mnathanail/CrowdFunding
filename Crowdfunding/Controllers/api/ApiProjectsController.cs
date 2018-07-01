@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Crowdfunding.Models;
+using Crowdfunding.services.projects.call;
 
 namespace Crowdfunding.Controllers.api
 {
@@ -13,24 +14,31 @@ namespace Crowdfunding.Controllers.api
     public class ApiProjectsController : Controller
     {
         private readonly CrowdfundingContext _context;
-
-        public ApiProjectsController(CrowdfundingContext context)
+        private readonly IProjectsCall _projectsCall;
+        public ApiProjectsController(CrowdfundingContext context, IProjectsCall projectsCall)
         {
             _context = context;
+            _projectsCall = projectsCall;
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? page)
         {
-            var crowdfundingContext = _context.Project;
-            var allProjects = await crowdfundingContext.ToListAsync();
-            
+            //var allProjects = await _projectsCall.ProjectsIndexCallJson(page);
+            //return Json(new
+            //{
+            //    allProjects
+            //});
+            return View();
+        }
+
+        public async Task<IActionResult> GetAllProjects(int? page)
+        {
+            var allProjects = await _projectsCall.ProjectsIndexCallJson(page);
             return Json(new
             {
-                response = allProjects
-
+                getAllProjects = allProjects
             });
-            //return View(await crowdfundingContext.ToListAsync());
         }
 
         // GET: Projects/Details/5

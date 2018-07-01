@@ -32,7 +32,7 @@ namespace Crowdfunding.Controllers
         // GET: Projects
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchString, string categorySelection, int? page)
-        {
+        {            
             return View(await _projectsCall.ProjectsIndexCall(searchString, categorySelection, page));
         }
 
@@ -121,10 +121,9 @@ namespace Crowdfunding.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,ProjectName,ProjectDescription,AskedFund,Days,NumberOfBenefits,MediaPath,VideoUrl,UserId,StartDate,CategoryId")] Project project)
+        public async Task<IActionResult> Edit(int id, Project project)
         {
             var userid = _GetPersonId();
-            
             if (id != project.ProjectId)
             {
                 return NotFound();
@@ -134,30 +133,40 @@ namespace Crowdfunding.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            if (ModelState.IsValid)
+            var getProjectDetails = await _context.Project.FindAsync(id);
+            getProjectDetails.VideoUrl = project.VideoUrl;
+            getProjectDetails.AskedFund = project.AskedFund;
+            getProjectDetails.ProjectDescription = project.ProjectDescription;
+            getProjectDetails.ProjectName = project.ProjectName;
+            getProjectDetails.CategoryId = project.CategoryId;
+            getProjectDetails.UserId = userid;
+            var rows = 0;
+            try
             {
-                try
+                _context.Update(getProjectDetails);
+                rows = await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProjectExists(project.ProjectId))
                 {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ProjectExists(project.ProjectId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+            }
+            if(rows > 0)
+            {
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
-            ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
-            return View(project);
+            else
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
+                ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
+                return View(project);
+            }
         }
 
         // GET: Projects/Delete/5

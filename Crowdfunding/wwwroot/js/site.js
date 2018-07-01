@@ -83,4 +83,15 @@ $(document).ready(function () {
     //        });
     //});
 
+    $.ajax({
+        url: "/apiprojects/getallprojects",
+        type: "GET",
+        data: {
+            page: id
+        }
+    }).done(function (data) {
+            $("#getAllProjects").append(JSON.stringify(data.getAllProjects, null, '\t'));
+        }).fail(function () {
+            console.log("fail");
+        });
 });

@@ -66,27 +66,31 @@
     </dd>
 </dl>
 
+@if (Model.MediaPath != null)
+{
+    <div align="center" class="gallery">
+        <h4>Photo Album</h4>
 
-<div align="center" class="gallery">
-    <h4>Photo Ambum</h4>
-    @if (Model.MediaPath != null)
-    {
-        foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
+        @foreach (var imgPath in Directory.GetFiles(Url.Content(Model.MediaPath)))
         {
             var img = new FileInfo(imgPath);
             <a target="_blank" href="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)">
                 <img height="200" src="@Url.Content("~/media/"+Model.UserId + "/"+Model.ProjectName +"/" + img.Name)" />
             </a>
         }
-    }
-</div>
-<br />
+    </div>
+    <br />
+}
 
-<div align="center">
-    <h4>Video</h4>
-    <iframe width="420" height="315" src="@Html.DisplayFor(model => model.VideoUrl)"></iframe>
-</div>
-<br />
+@if (Model.VideoUrl != null)
+{
+    <div align="center">
+        <h4>Video</h4>
+        <iframe width="420" height="315" src="@Html.DisplayFor(model => model.VideoUrl)"></iframe>
+    </div>
+    <br />
+}
+
 
 <div class="row" align="center">
     <div class="container">
@@ -113,6 +117,16 @@
                             {
                                 <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
                             }
+                        </form>
+                        <form id="myform" action="/checkout" method="post">
+                            <button type="button"
+                                    data-vp-publickey="LZmm8E8FLUJmRMPQFAssIV3mkzsrgQ3wbDIp7XcsZno="
+                                    data-vp-baseurl="https://demo.vivapayments.com"
+                                    data-vp-lang="en"
+                                    data-vp-amount="@item.BenefitPrice"
+                                    data-vp-description="@item.BenefitDesciption">
+                                Pay
+                            </button>
                         </form>
                     </div>
                 </div>
