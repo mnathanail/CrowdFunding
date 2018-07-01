@@ -1,5 +1,7 @@
 ﻿@model Crowdfunding.Models.Project
 @using System.IO;
+@using System.Security.Claims;
+
 @{
     ViewData["Title"] = "Details";
 }
@@ -143,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-                sum += Convert.ToInt32(item.BenefitPrice)*100;
+                sum += Convert.ToInt32(item.BenefitPrice) * 100;
             }
         }
         <form id="myform" action="/Projects/Details/@Model.ProjectId" method="post">
@@ -158,7 +160,14 @@
     </div>
 </div>
 <br />
+
 <div class="fb-share-button" data-href="http://8720d32c.eu.ngrok.io/Projects/Details/1" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div><div>
-    <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
+
+    @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(Model.UserId))
+    {
+
+        <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit| </a>
+
+    }
     <a asp-action="Index">Back to List</a>
 </div>
