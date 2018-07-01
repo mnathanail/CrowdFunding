@@ -19,7 +19,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        <a asp-action="Create" class="btn btn-primary" >Create New</a>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
     </p>
 }
 
@@ -90,9 +90,16 @@
                     @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+
+                    <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <p>
+                        |
+                        <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProjectId"> Delete </a>
+                    </p>
+                    }
                 </td>
             </tr>
         }
