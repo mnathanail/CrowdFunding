@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Security.Policy;
 using System.IO;
+using RestSharp;
 
 namespace Crowdfunding.Controllers
 {
@@ -198,6 +199,25 @@ namespace Crowdfunding.Controllers
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<TransactionResult> ChargeAsync(string vivaWalletToken)
+        {
+            var cl = new RestClient("https://demo.vivapayments.com/api/")
+            {
+                Authenticator = new HttpBasicAuthenticator("29e14ab7-52b2-4096-96db-09e0730da416", "iLs)h6")
+            };
+            var request = new RestRequest("transactions", Method.POST)
+            {
+                RequestFormat = DataFormat.Json
+            };
+
+            request.AddParameter("PaymentToken", vivaWalletToken);
+
+            var response = await cl.ExecuteTaskAsync<TransactionResult>(request);
+
+            return response.ResponseStatus == ResponseStatus.Completed &&
+                response.StatusCode == System.Net.HttpStatusCode.OK ? response.Data : null;
         }
 
         private bool ProjectExists(int id)
