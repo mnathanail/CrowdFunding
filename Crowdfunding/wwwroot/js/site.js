@@ -15,24 +15,91 @@ $(document).ready(function () {
             return sessionStorage.getItem(name);
         }
     };
+
     $("#numberOfBenefits-create").on("change", function () {
         if ($(".form-group.Benefit").length > 0) {
             $(".form-group.Benefit").remove();
         }
         let amount = $(this).val();
         let inputs = "";
+        if (amount < 1 || amount > 8) {
+            return false;
+        }
         for (var i = 0; i < amount; i++) {
             inputs += `<div class="form-group Benefit">` +
                 `<label asp-for="Benefit" class= "control-label" ></label >` +
-                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitName" placeholder="Benefit Name"/>` +
-                `<span asp-validation-for="BenefitName" class="text-danger"></span>` +
-                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitDesciption" placeholder="Benefit Description"/>` +
-                `<input asp-for="Benefit" class="form-control" name="Benefits[${i}].BenefitPrice" placeholder="Benefit Price"/>` +
-                `<span asp-validation-for="Benefit" class="text-danger"></span>` +
+                `<input asp-for="Benefit" id="BenefitName${i}" class="form-control BenefitName" name="Benefits[${i}].BenefitName" placeholder="Benefit Name"/>` +
+                `<span asp-validation-for="Benefits[${i}].BenefitName" class="text-danger BenefitName${i}Danger"></span>` +
+
+                `<input asp-for="Benefit" id="BenefitDesciption${i}" class="form-control BenefitDesciption" name="Benefits[${i}].BenefitDesciption" placeholder="Benefit Description"/>` +
+                `<span asp-validation-for="Benefits[${i}].BenefitDesciption" class="text-danger BenefitDesciption${i}Danger"></span>` +
+
+                `<input asp-for="Benefit" id="BenefitPrice${i}" class="form-control BenefitPrice" name="Benefits[${i}].BenefitPrice" placeholder="Benefit Price"/>` +
+                `<span asp-validation-for="Benefits[${i}].BenefitPrice" class="text-danger BenefitPrice${i}Danger"></span>` +
                 `</div>`;
         }
         $(".form-group.NumberOfBenefits").after(inputs);
     });
+
+    $(document).on("blur", ".Benefit", function () {
+        let clickedBenefitPrice = $(this).find(".BenefitPrice").attr("id");
+        let clickedBenefitName = $(this).find(".BenefitName").attr("id");
+        let clickedBenefitDescription = $(this).find(".BenefitDesciption").attr("id");
+        checkBenefitPrice(clickedBenefitPrice);
+        
+        checkBenefitName(clickedBenefitName);
+    
+        checkBenefitDescription(clickedBenefitDescription);
+        
+    });
+
+    let checkBenefitPrice = function (clickedItem) {
+        if (~clickedItem.indexOf("BenefitPrice")) {
+            let price = $("#" + clickedItem).val();
+            let bool = $.isNumeric(price) && parseInt(price) > 0;
+            if (!bool) {
+                $("." + clickedItem + "Danger").html("Please enter a valid price!");
+                $(".createbutton").attr("disabled", "disabled");
+                return false;
+            }
+            else {
+                $("." + clickedItem + "Danger").text("");
+                $(".createbutton").removeAttr('disabled');
+            }
+        }
+    };
+
+    let checkBenefitName = function (clickedItem) {
+        if (~clickedItem.indexOf("BenefitName")) {
+            let name = $("#" + clickedItem).val();
+            let bool = name.length > 0;
+            if (!bool) {
+                $("." + clickedItem + "Danger").html("Please enter a valid Name!");
+                $(".createbutton").attr("disabled", "disabled");
+                return false;
+            }
+            else {
+                $("." + clickedItem + "Danger").text("");
+                $(".createbutton").removeAttr('disabled');
+            }
+        }
+    };
+
+    let checkBenefitDescription = function (clickedItem) {
+        if (~clickedItem.indexOf("BenefitDesciption")) {
+            let name = $("#" + clickedItem).val();
+            let bool = name.length > 0;
+            if (!bool) {
+                $("." + clickedItem + "Danger").html("Please enter a valid Description!");
+                $(".createbutton").attr("disabled", "disabled");
+                return false;
+            }
+            else {
+                $("." + clickedItem + "Danger").text("");
+                $(".createbutton").removeAttr('disabled');
+            }
+        }
+    };
 
     $("#searchByForm .selectByCategory").on("change", function () {
         if ($("#SearchString").val() !== "") {
@@ -68,26 +135,11 @@ $(document).ready(function () {
         });
     });
 
-    //$("#takis").on("click", function () {
-    //    $.ajax({
-
-    //        url: "/apiprojects/index",
-    //        type: "GET"
-    //    })
-    //        .done(function (data, statusText) {
-    //            console.log(data.name);
-    //            console.log(statusText);
-    //            // window.location.href = data.redirectUrl;
-    //        }).fail(function () {
-    //            console.log("error");
-    //        });
-    //});
-
     $.ajax({
         url: "/apiprojects/getallprojects",
         type: "GET",
         data: {
-            page: id
+            //page: id
         }
     }).done(function (data) {
             $("#getAllProjects").append(JSON.stringify(data.getAllProjects, null, '\t'));

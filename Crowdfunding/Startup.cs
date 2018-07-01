@@ -40,11 +40,10 @@ namespace Crowdfunding
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
 
             var connection = @"Server=localhost\sqlexpress;Database=Crowdfunding;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<CrowdfundingContext>(options => options.UseSqlServer(connection));

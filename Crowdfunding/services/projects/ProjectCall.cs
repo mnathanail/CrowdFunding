@@ -31,7 +31,7 @@ namespace Crowdfunding.services.projects
         public async Task<Pagination<Project>> ProjectsIndexCall(string searchString, string categorySelection, int? page)
         {
             var crowdfundingContext = _context.Project.Include(p => p.Category).Include(p => p.User);
-            var pageSize = 2;
+            var pageSize = 5;
             if (!String.IsNullOrEmpty(searchString))
             {
                 page = 1;

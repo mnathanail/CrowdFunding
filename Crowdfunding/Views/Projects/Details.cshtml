@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+@section metatags {
+    <meta name='og:title' content='@Model.ProjectName' />
+    <meta name='og:description' content='@Model.ProjectDescription' />
+}
 <h2>Project Details</h2>
 
 <h3>Project</h3>
@@ -118,25 +121,24 @@
                                 <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Log in First!</a>
                             }
                         </form>
-                        <form id="myform" action="/checkout" method="post">
-                            <button type="button"
-                                    data-vp-publickey="LZmm8E8FLUJmRMPQFAssIV3mkzsrgQ3wbDIp7XcsZno="
-                                    data-vp-baseurl="https://demo.vivapayments.com"
-                                    data-vp-lang="en"
-                                    data-vp-amount="@item.BenefitPrice"
-                                    data-vp-description="@item.BenefitDesciption">
-                                Pay
-                            </button>
-                        </form>
+
                     </div>
                 </div>
             </div>
         }
+
+        <form id="myform" action="/Projects/Details/@Model.ProjectId" method="post">
+            <button type="button"
+                    data-vp-publickey="CI+tnPBEUkhvr8Wr8j/rREtxx2TmNQIdZV8aT7RjArE="
+                    data-vp-baseurl="https://demo.vivapayments.com"
+                    data-vp-lang="en"
+                    data-vp-amount="1000"
+                    data-vp-description="My product"></button>
+        </form>
     </div>
 </div>
 <br />
-
-<div>
+<div class="fb-share-button" data-href="https://www.localhost:44327/Projects/Details/1" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div><div>
     <a asp-action="Edit" asp-route-id="@Model.ProjectId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

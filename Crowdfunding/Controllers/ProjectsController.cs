@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Security.Policy;
 using System.IO;
+using RestSharp;
 
 namespace Crowdfunding.Controllers
 {
@@ -22,7 +23,9 @@ namespace Crowdfunding.Controllers
     public class ProjectsController : Controller
     {
         private readonly CrowdfundingContext _context;
+
         private readonly IProjectsCall _projectsCall;
+
         public ProjectsController(CrowdfundingContext context, IProjectsCall projectsCall)
         {
             _context = context;
@@ -59,6 +62,7 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects/Create
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName");
@@ -90,12 +94,14 @@ namespace Crowdfunding.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", project.CategoryId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.UserId);
             return View(project);
         }
 
         // GET: Projects/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             var userid = _GetPersonId();
@@ -170,6 +176,7 @@ namespace Crowdfunding.Controllers
         }
 
         // GET: Projects/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -198,6 +205,25 @@ namespace Crowdfunding.Controllers
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<TransactionResult> ChargeAsync(string vivaWalletToken)
+        {
+            var cl = new RestClient("https://demo.vivapayments.com/api/")
+            {
+                Authenticator = new HttpBasicAuthenticator("29e14ab7-52b2-4096-96db-09e0730da416", "iLs)h6")
+            };
+            var request = new RestRequest("transactions", Method.POST)
+            {
+                RequestFormat = DataFormat.Json
+            };
+
+            request.AddParameter("PaymentToken", vivaWalletToken);
+
+            var response = await cl.ExecuteTaskAsync<TransactionResult>(request);
+
+            return response.ResponseStatus == ResponseStatus.Completed &&
+                response.StatusCode == System.Net.HttpStatusCode.OK ? response.Data : null;
         }
 
         private bool ProjectExists(int id)
