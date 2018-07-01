@@ -1,4 +1,5 @@
 ﻿@model Crowdfunding.Utilities.Pagination<Crowdfunding.Models.Project>
+@using System.Security.Claims;
 
 @{
     ViewData["Title"] = "Index";
@@ -90,15 +91,14 @@
                     @Html.DisplayFor(modelItem => item.User.UserName)
                 </td>
                 <td>
-
                     <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a>
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier).Equals(item.UserId))
                     {
-                    <p>
-                        |
-                        <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ProjectId"> Delete </a>
-                    </p>
+                        <p>
+                            |
+                            <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ProjectId"> Delete </a>
+                        </p>
                     }
                 </td>
             </tr>
