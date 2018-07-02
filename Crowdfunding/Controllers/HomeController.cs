@@ -38,15 +38,10 @@ namespace Crowdfunding.Controllers
                 client.Disconnect(true);
             }
 
-
-
-
             var userId = _GetPersonId();
 
             var usercontext = await _context.Project
                 .Include(u => u.User)
-                //.Include(b => b.UsersBenefits)
-                //.Where(p => p.UserId == userId)
                 .Select(p => new Dashboard
                 {
                     ProjectId = p.ProjectId,
@@ -57,19 +52,20 @@ namespace Crowdfunding.Controllers
 
             foreach (var item in usercontext)
             {
-                item.Backers = await _context.UsersBenefits
-                .Where(p => p.ProjectId == item.ProjectId)
-                .Select(i => i.Benefit).CountAsync();
+                //item.Backers = await _context.UsersBenefits
+                //.GroupBy(x => x.UserId).Select(x => x.First())
+                //.Where(p => p.ProjectId == item.ProjectId)
+                //.Select(i => i.Benefit)
+                //.CountAsync();
 
                 item.Sum = await _context.UsersBenefits
                 .Where(p => p.ProjectId == item.ProjectId)
                 .Select(i => i.Benefit.BenefitPrice).SumAsync();
             }
-            var sortedList = usercontext.OrderByDescending(l => l.Backers).Take(10)
-                             .ToList();
+            //var sortedList = usercontext.OrderByDescending(l => l.Backers).Take(10).ToList();
             var sortedListFunds = usercontext.OrderByDescending(f => f.Sum).Take(10).ToList();
 
-            return View(sortedList);
+            return View(sortedListFunds);
         }
 
         public IActionResult About()
