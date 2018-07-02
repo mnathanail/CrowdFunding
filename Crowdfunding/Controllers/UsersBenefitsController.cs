@@ -191,12 +191,14 @@ namespace Crowdfunding.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        private async Task _SendMailAsync() {
+        private async Task _SendMailAsync()
+        {
             var usercontext = await _context.Project
                                 .Join(_context.UsersBenefits,
                                 p => p.ProjectId,
                                 ub => ub.ProjectId,
-                                (p, ub) => new {
+                                (p, ub) => new
+                                {
                                     pname = p.ProjectName,
                                     asked = p.AskedFund,
                                     email = p.User.Email,

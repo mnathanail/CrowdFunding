@@ -23,21 +23,6 @@ namespace Crowdfunding.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("TestProject", "testproject@gmail.com"));
-            message.To.Add(new MailboxAddress("Hello", "ccrowdfunders.info@gmail.com"));
-            message.Subject = "test mail";
-            message.Body = new TextPart("plain")
-            {
-                Text = "Hi! hello world"
-            };
-            using (var client = new MailKit.Net.Smtp.SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("ccrowdfunders.info@gmail.com", "Crowdfunders.");
-                client.Disconnect(true);
-            }
-
             var userId = _GetPersonId();
 
             var usercontext = await _context.Project
