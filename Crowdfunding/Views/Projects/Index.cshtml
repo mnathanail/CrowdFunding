@@ -121,60 +121,65 @@
        class="btn btn-default @nextDisabled">
         Next
     </a>
+    <br />
 
-
-
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-3">
-                <div class="card card-inverse card-success bg-info text-center">
-                    @if (item.MediaPath != null)
-                    {
-                        @foreach (var imgPath in Directory.GetFiles(Url.Content(item.MediaPath)))
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3">
+                    <div class="card card-inverse card-success text-center table-bordered" style="text-align:center">
+                        @if (item.MediaPath != null)
                         {
-                            var img = new FileInfo(imgPath);
-                            <a target="_blank" href="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)">
-                                <img class="card-img-top img-fluid" height="200" src="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)" />
-                            </a>
-                            break;
+                            @foreach (var imgPath in Directory.GetFiles(Url.Content(item.MediaPath)))
+                            {
+                                var img = new FileInfo(imgPath);
+                                <a target="_blank" href="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)">
+                                    <img class="card-img-top img-fluid" height="200" src="@Url.Content("~/media/" + item.UserId + "/" + item.ProjectName + "/" + img.Name)" />
+                                </a>
+                                break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        <img class="card-img-top img-fluid" src="http://via.placeholder.com/200x200" alt="">
-                    }
-                    <div class="card-block">
-                        <h4 class="card-title">Project: @Html.DisplayFor(modelItem => item.ProjectName)</h4>
-                        <p class="card-text">Description: @Html.DisplayFor(modelItem => item.ProjectDescription)</p>
-                        <a asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-primary">Project Details</a>
-                        <p>
-                            Asked Fund: @Html.DisplayFor(modelItem => item.AskedFund)
-                        </p>
-                        <p>
-                            Days: @Html.DisplayFor(modelItem => item.Days)
-                        </p>
-                        <p>
-                            Benefit Packages: @Html.DisplayFor(modelItem => item.NumberOfBenefits)
-                        </p>
-                        <p>
-                            <a id="videoUrl" target="_blank" href="http://@item.VideoUrl">
-                                @Html.DisplayFor(modelItem => item.VideoUrl)
-                            </a>
-                        </p>
-                        <p>
-                            Start at : @Html.DisplayFor(modelItem => item.StartDate)
-                        </p>
-                        <p>
-                            Category: @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                        </p>
-                        <p>
-                            By user: @Html.DisplayFor(modelItem => item.User.UserName)
-                        </p>
+                        else
+                        {
+                            <img class="card-img-top img-fluid" src="http://via.placeholder.com/200x200" alt="">
+                        }
+                        <div class="card-block">
+                            <h4 class="card-title">Project: @Html.DisplayFor(modelItem => item.ProjectName)</h4>
+                            <p class="card-text">Description: @Html.DisplayFor(modelItem => item.ProjectDescription)</p>
+                            <a asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-primary">Project Details</a>
+                            <p>
+                                Asked Fund: @Html.DisplayFor(modelItem => item.AskedFund)
+                            </p>
+                            <p>
+                                Days: @Html.DisplayFor(modelItem => item.Days)
+                            </p>
+                            <p>
+                                Benefit Packages: @Html.DisplayFor(modelItem => item.NumberOfBenefits)
+                            </p>
+                            @if (item.VideoUrl != null)
+                            {
+                                <p>
+                                    <a id="videoUrl" target="_blank" href="@item.VideoUrl">
+                                        @*@Html.DisplayFor(modelItem => item.VideoUrl)*@
+                                        Video
+                                    </a>
+                                </p>
+                            }
+                            <p>
+                                Start at : @Html.DisplayFor(modelItem => item.StartDate)
+                            </p>
+                            <p>
+                                Category: @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            </p>
+                            <p>
+                                By user: @Html.DisplayFor(modelItem => item.User.UserName)
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 }
 else
