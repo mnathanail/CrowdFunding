@@ -82,63 +82,13 @@ namespace Crowdfunding.Controllers
                     usersBenefits.UserId = _GetPersonId();
                     _context.Add(usersBenefits);
                     await _context.SaveChangesAsync();
-
-                    var usercontext = await _context.Project
-                       .Include(u => u.User)
-                       .Where(p => p.UserId == userId)
-                       .Select(p => new 
-                       {
-                           p.ProjectId,
-                           p.ProjectName,
-                           p.AskedFund,
-                           p.User.Email
-                       }).ToListAsync();
-                       
-                    decimal sum = 0;
-                    var askedFund = 0M;
-                    var proId = 0;
-                    var pname = "";
-                    var backers = new List<string>();
-                    foreach (var item in usercontext)
-                    {
-                         sum= await _context.UsersBenefits
-                        .Where(p => p.ProjectId == item.ProjectId)
-                        .Select(i => i.Benefit.BenefitPrice).SumAsync();
-                        askedFund = item.AskedFund;
-                        proId = item.ProjectId;
-                        backers.Add(item.Email);
-                        pname = item.ProjectName;
-                    }
-                    if (sum >= askedFund)
-                    {
-                        var message = new MimeMessage();
-                        message.From.Add(new MailboxAddress(pname, "ccrowdfunding@gmail.com"));
-                        foreach(var backer in backers)
-                        {
-                            message.To.Add(new MailboxAddress("Hello!", backer));
-                        }
-
-                        message.Subject = "Information mail";
-                        message.Body = new TextPart("plain")
-                        {
-                            Text = "Your project has been funded"
-                        };
-                        using (var client = new MailKit.Net.Smtp.SmtpClient())
-                        {
-                            client.Connect("smtp.gmail.com", 587, false);
-                            client.Authenticate("ccrowdfunders.info@gmail.com", "Crowdfunders.");
-                            client.Send(message);
-                            client.Disconnect(true);
-                        }
-                    }
-
+                    await _SendMailAsync();
                     return Json(new
                     {
                         status = hasBenefit,
-                        message = "Congratulations! Smart choice to give us your money!"
+                        message = "Congratulations! Smart choice to fund this project!"
                     });
                 }
-                
             }
             ViewData["BenefitId"] = new SelectList(_context.Benefit, "BenefitId", "BenefitDesciption", usersBenefits.BenefitId);
             ViewData["UserId"] = new SelectList(_context.AspNetUsers, "Id", "Id", usersBenefits.UserId);
@@ -239,6 +189,54 @@ namespace Crowdfunding.Controllers
         private string _GetPersonId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        private async Task _SendMailAsync() {
+            var usercontext = await _context.Project
+                                .Join(_context.UsersBenefits,
+                                p => p.ProjectId,
+                                ub => ub.ProjectId,
+                                (p, ub) => new {
+                                    pname = p.ProjectName,
+                                    asked = p.AskedFund,
+                                    email = p.User.Email,
+                                    pid = p.ProjectId,
+                                    ubid = ub.ProjectId
+                                })
+                                .Where(p => p.pid == p.ubid)
+                                .ToListAsync();
+            decimal sum = 0;
+            var askedFund = 0M;
+            var pname = "";
+            var email = "";
+            foreach (var item in usercontext)
+            {
+                sum = await _context.UsersBenefits
+               .Where(p => p.ProjectId == item.pid)
+               .Select(i => i.Benefit.BenefitPrice).SumAsync();
+                askedFund = item.asked;
+                email = item.email;
+                pname = item.pname;
+            }
+            if (sum > askedFund)
+            {
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(pname, "ccrowdfunding@gmail.com"));
+                message.To.Add(new MailboxAddress("Hello!", email));
+
+                message.Subject = "Information mail";
+                message.Body = new TextPart("plain")
+                {
+                    Text = $"Your project '{pname}' has been funded"
+                };
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 587, false);
+                    client.Authenticate("ccrowdfunders.info@gmail.com", "Crowdfunders.");
+                    await client.SendAsync(message);
+                    client.Disconnect(true);
+                }
+            }
         }
     }
 }
